@@ -748,6 +748,40 @@
       border-right-color:#26110e;
       border-bottom-color:#26110e;
     }
+
+    /* CHATCITY v32 — 모바일 지도 상단 컨트롤 재배치.
+       장소 목록은 왼쪽, 배율 스텝퍼는 오른쪽에 두고 두 컨트롤 높이를 동일하게 맞춥니다.
+       배경 불투명도 70%, 데스크톱에서는 기존 배치 및 초기화 버튼을 유지합니다. */
+    @media (max-width:760px) {
+      .mobile-browse-btn {
+        left:13px;
+        right:auto;
+        top:13px;
+        height:42px;
+        min-height:42px;
+        padding:0 12px;
+        background:rgba(255,254,247,.70);
+        border-color:rgba(234,219,183,.7);
+        border-radius:12px;
+        box-shadow:0 3px 10px rgba(70,54,27,.08);
+      }
+      .zoom-tools {
+        top:13px;
+        right:13px;
+        bottom:auto;
+        left:auto;
+        height:42px;
+        padding:0 5px;
+        gap:1px;
+        background:rgba(255,254,247,.70);
+        border:1px solid rgba(234,219,183,.7);
+        border-radius:12px;
+        box-shadow:0 3px 10px rgba(70,54,27,.08);
+      }
+      .zoom-tools button { width:31px; height:32px; }
+      .zoom-tools output { width:43px; }
+      .zoom-tools .reset { display:none; }
+    }
   </style>
 </head>
 <body>
