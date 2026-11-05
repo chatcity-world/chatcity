@@ -721,91 +721,32 @@
     }
 
 
-    /* CHATCITY v29 — roof-anchored labels sit away from illustrated buildings.
-       Building coordinates are the pointer tips, not the speech box centres. */
-    .map-world .pin {
-      display:block;
-      width:1px;
-      height:1px;
-      min-width:0;
-      max-width:none;
-      min-height:0;
-      padding:0;
-      margin:0;
-      overflow:visible;
-      background:transparent;
-      border:0;
-      filter:none;
-      z-index:9;
-      transform:translate(-50%,-50%) scale(var(--pin-inverse-zoom, 1));
-      transform-origin:50% 50%;
-    }
-    .map-world .pin:hover,
-    .map-world .pin.active { z-index:30; filter:none; }
+    /* CHATCITY v30: restore the original short-tail speech bubbles from v28.
+       The pin left/top percentages are the tip coordinates and can be edited directly.
+       Only the active pin reveals its associated emoji INSIDE the same bubble. */
     .map-world .pin .pin-label {
-      position:absolute;
-      left:var(--bubble-x, 0px);
-      top:var(--bubble-y, -90px);
-      display:block;
-      width:max-content;
-      min-width:0;
-      min-height:0;
-      max-width:145px;
-      margin:0;
-      padding:7px 10px;
-      transform:translate(-50%,-50%);
-      background:rgba(255,254,247,.96);
-      border:1px solid rgba(78,56,30,.36);
-      border-radius:10px;
-      box-shadow:0 2px 8px rgba(45,33,17,.17);
-      color:#38281c;
-      font-family:inherit;
-      font-size:11px;
-      line-height:1.25;
-      font-weight:800;
-      white-space:normal;
-      text-align:center;
-      overflow-wrap:normal;
-      word-break:keep-all;
-      z-index:2;
-      pointer-events:auto;
-      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
     }
-    .map-world .pin .pin-label::after { display:none !important; }
-    .map-world .pin .pin-leader {
-      position:absolute;
-      left:0; top:0;
-      width:1px; height:1px;
-      overflow:visible;
-      pointer-events:none;
-      z-index:1;
+    .map-world .pin .pin-selected-emoji {
+      display:none;
+      font-size:15px;
+      line-height:1;
+      flex:none;
     }
-    .map-world .pin .pin-leader path {
-      fill:rgba(255,254,247,.80);
-      stroke:rgba(78,56,30,.20);
-      stroke-width:.5;
-      stroke-linejoin:round;
-      vector-effect:non-scaling-stroke;
-    }
+    .map-world .pin.active .pin-selected-emoji { display:inline-block; }
     .map-world .pin.active .pin-label {
       background:#26110e;
       color:#fff;
       border-color:#26110e;
+      box-shadow:0 0 0 2px rgba(255,247,218,.85), 0 4px 14px rgba(38,17,14,.35);
     }
-    .map-world .pin.active .pin-leader path {
-      fill:#26110e;
-      stroke:#26110e;
-    }
-    @media (max-width:760px) {
-      .map-world .pin { width:1px; height:1px; max-width:none; padding:0; }
-      .map-world .pin[data-place="crown"] { --bubble-x:95px !important; --bubble-y:-67px !important; }
-      .map-world .pin .pin-label {
-        padding:7px 9px;
-        font-size:10px;
-        line-height:1.3;
-        max-width:136px;
-        border-radius:9px;
-      }
+    .map-world .pin.active .pin-label::after {
+      background:#26110e;
+      border-right-color:#26110e;
+      border-bottom-color:#26110e;
     }
   </style>
 </head>
@@ -870,14 +811,14 @@
             </div>
             <!-- 지도 이미지는 4개 시간대별로 자동 교체됩니다. 장소 좌표는 시간대와 무관하게 유지됩니다. -->
 
-            <button type="button" class="pin" data-place="tarot" style="left:89.3%;top:16.8%;--bubble-x:-109px;--bubble-y:-96px" aria-label="타로점 선택"><span class="pin-label">타로점</span></button>
-            <button type="button" class="pin" data-place="crown" style="left:53.9%;top:28.7%;--bubble-x:142px;--bubble-y:72px" aria-label="The Crown 빌딩 선택"><span class="pin-label">The Crown 빌딩</span></button>
-            <button type="button" class="pin" data-place="smallpark" style="left:12.4%;top:38.7%;--bubble-x:-103px;--bubble-y:-59px" aria-label="작은 공원 선택"><span class="pin-label">작은 공원</span></button>
-            <button type="button" class="pin" data-place="outskirtsCafe" style="left:25.6%;top:21.4%;--bubble-x:-104px;--bubble-y:-85px" aria-label="카페 선택"><span class="pin-label">카페</span></button>
-            <button type="button" class="pin" data-place="flowerbed" style="left:41.6%;top:65.1%;--bubble-x:129px;--bubble-y:72px" aria-label="아파트 단지 앞 화단 선택"><span class="pin-label">아파트 단지 앞 화단</span></button>
-            <button type="button" class="pin" data-place="bookstore" style="left:69.3%;top:62.4%;--bubble-x:100px;--bubble-y:105px" aria-label="작은 서점 선택"><span class="pin-label">작은 서점</span></button>
-            <button type="button" class="pin" data-place="hillhouse" style="left:10.2%;top:8.6%;--bubble-x:112px;--bubble-y:-43px" aria-label="언덕 위 집 선택"><span class="pin-label">언덕 위 집</span></button>
-            <button type="button" class="pin" data-place="detectiveOffice" style="left:79.6%;top:42.7%;--bubble-x:-58px;--bubble-y:119px" aria-label="탐정 사무소 선택"><span class="pin-label">탐정 사무소</span></button>
+            <button type="button" class="pin" data-place="tarot" style="left:89.3%;top:16.8%" aria-label="타로점 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🔮</span><span class="pin-text">타로점</span></span></button>
+            <button type="button" class="pin" data-place="crown" style="left:53.9%;top:28.7%" aria-label="The Crown 빌딩 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🏙️</span><span class="pin-text">The Crown 빌딩</span></span></button>
+            <button type="button" class="pin" data-place="smallpark" style="left:12.4%;top:38.7%" aria-label="작은 공원 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🌿</span><span class="pin-text">작은 공원</span></span></button>
+            <button type="button" class="pin" data-place="outskirtsCafe" style="left:25.6%;top:21.4%" aria-label="카페 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">☕</span><span class="pin-text">카페</span></span></button>
+            <button type="button" class="pin" data-place="flowerbed" style="left:41.6%;top:65.1%" aria-label="아파트 단지 앞 화단 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🌷</span><span class="pin-text">아파트 단지 앞 화단</span></span></button>
+            <button type="button" class="pin" data-place="bookstore" style="left:69.3%;top:62.4%" aria-label="작은 서점 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">📖</span><span class="pin-text">작은 서점</span></span></button>
+            <button type="button" class="pin" data-place="hillhouse" style="left:10.2%;top:8.6%" aria-label="언덕 위 집 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🏡</span><span class="pin-text">언덕 위 집</span></span></button>
+            <button type="button" class="pin" data-place="detectiveOffice" style="left:79.6%;top:42.7%" aria-label="탐정 사무소 선택"><span class="pin-label"><span class="pin-selected-emoji" aria-hidden="true">🔎</span><span class="pin-text">탐정 사무소</span></span></button>
           </div>
           
           <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="장소 목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">장소 목록</span></button>
@@ -1525,53 +1466,6 @@
   })();
 </script>
 
-<script>
-  // CHATCITY v29: each leader begins on its label edge and ends at the roof.
-  (() => {
-    const markerButtons = [...document.querySelectorAll('#mapWorld .pin[data-place]')];
-    const NS = 'http://www.w3.org/2000/svg';
-    for (const pin of markerButtons) {
-      const svg = document.createElementNS(NS, 'svg');
-      svg.classList.add('pin-leader');
-      svg.setAttribute('aria-hidden', 'true');
-      svg.setAttribute('focusable', 'false');
-      const triangle = document.createElementNS(NS, 'path');
-      svg.appendChild(triangle);
-      pin.insertBefore(svg, pin.firstChild);
-    }
-    function repositionPointerTails() {
-      for (const pin of markerButtons) {
-        const label = pin.querySelector('.pin-label');
-        const path = pin.querySelector('.pin-leader path');
-        if (!label || !path) continue;
-        const st = getComputedStyle(pin);
-        const dx = parseFloat(st.getPropertyValue('--bubble-x')) || 0;
-        const dy = parseFloat(st.getPropertyValue('--bubble-y')) || -90;
-        const rect = label.getBoundingClientRect();
-        const w = rect.width;
-        const h = rect.height;
-        // Use the closest box edge to the landmark. Base is narrow, so it does
-        // not mask a second building or create an oversized pointer wedge.
-        let ax, ay, bx, by;
-        if (Math.abs(dx) / (w / 2 + 1) > Math.abs(dy) / (h / 2 + 1)) {
-          ax = dx - Math.sign(dx) * w / 2;
-          ay = dy;
-          bx = ax;
-          by = dy;
-          path.setAttribute('d', `M ${ax} ${ay - 2} L ${bx} ${by + 2} L 0 0 Z`);
-        } else {
-          ax = dx;
-          ay = dy - Math.sign(dy) * h / 2;
-          path.setAttribute('d', `M ${ax - 2} ${ay} L ${ax + 2} ${ay} L 0 0 Z`);
-        }
-      }
-    }
-    // CSS inverse-zoom means label widths stay in screen pixels; no reflow
-    // is necessary on every wheel step, only after layout changes.
-    repositionPointerTails();
-    window.addEventListener('resize', repositionPointerTails);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(repositionPointerTails);
-  })();
-</script>
+
 </body>
 </html>
