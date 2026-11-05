@@ -751,7 +751,7 @@
 
     /* CHATCITY v32 — 모바일 지도 상단 컨트롤 재배치.
        장소 목록은 왼쪽, 배율 스텝퍼는 오른쪽에 두고 두 컨트롤 높이를 동일하게 맞춥니다.
-       배경 불투명도 80%, 데스크톱에서는 기존 배치 및 초기화 버튼을 유지합니다. */
+       배경 불투명도 70%, 데스크톱에서는 기존 배치 및 초기화 버튼을 유지합니다. */
     @media (max-width:760px) {
       .mobile-browse-btn {
         left:13px;
@@ -760,7 +760,7 @@
         height:42px;
         min-height:42px;
         padding:0 12px;
-        background:rgba(255,254,247,.80);
+        background:rgba(255,254,247,.70);
         border-color:rgba(234,219,183,.7);
         border-radius:12px;
         box-shadow:0 3px 10px rgba(70,54,27,.08);
@@ -773,7 +773,7 @@
         height:42px;
         padding:0 5px;
         gap:1px;
-        background:rgba(255,254,247,.80);
+        background:rgba(255,254,247,.70);
         border:1px solid rgba(234,219,183,.7);
         border-radius:12px;
         box-shadow:0 3px 10px rgba(70,54,27,.08);
@@ -781,6 +781,17 @@
       .zoom-tools button { width:31px; height:32px; }
       .zoom-tools output { width:43px; }
       .zoom-tools .reset { display:none; }
+    }
+  
+    /* v33: NPC 인물 소개 공개 예정 안내 (PC 및 모바일 공통) */
+    .npc-section-release .npc-section-text {
+      margin: 26px 0 28px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .015em;
+      line-height: 1.8;
+      color: #776b52;
     }
   </style>
 </head>
@@ -946,7 +957,7 @@
       name: '비비안 매디슨',
       role: '미국 상류층 셀럽',
       image: 'assets/vivian-madison.jpg',
-      description: '겉으로는 상류층 사교계를 주름잡는 유명 소셜라이트(Socialite)이자 에스테틱 브랜드 후계자. 실제로는 부유층의 불륜, 기업 비리, 비자금 추적 전문 1급 사설 탐정(Private Investigator). 샴페인 잔에는 사실 알코올이 전혀 없는 무알콜 사과 탄산수가 들어있다. 목에 걸고 있는 십자가 펜던트는 고성능 방향성 마이크로, 은밀한 대화를 완벽히 녹음 중이. 스트레스 해소용으로 불닭볶음면을 좋아한다.'
+      description: '겉으로는 상류층 사교계를 주름잡는 유명 소셜라이트(Socialite)이자 에스테틱 브랜드 후계자. 실제로는 부유층의 불륜, 기업 비리, 비자금 추적 전문 1급 사설 탐정(Private Investigator). 샴페인 잔에는 사실 알코올이 전혀 없는 무알콜 사과 탄산수가 들어있음. 목에 걸고 있는 십자가 펜던트는 고성능 방향성 마이크로, 은밀한 대화를 완벽히 녹음 중. 불닭볶음면을 좋아함(스트레스 해소).'
     },
     chunsik: {
       name: '김춘식',
@@ -1141,7 +1152,13 @@
       label.textContent = title;
       const paragraph = document.createElement('p');
       paragraph.className = 'npc-section-text';
-      paragraph.textContent = value;
+      if (title === '인물 소개') {
+        // 원래 NPC 상세 내용은 데이터에 보관하고, 공개 예정 안내만 표시합니다.
+        section.classList.add('npc-section-release');
+        paragraph.textContent = '2026.11.08에 공개됩니다';
+      } else {
+        paragraph.textContent = value;
+      }
       section.append(label, paragraph);
       content.appendChild(section);
     }
