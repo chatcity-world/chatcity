@@ -616,6 +616,110 @@
       .mobile-topbar-brand small { font-size:7px; letter-spacing:.10em; }
       .mobile-download-trigger { min-width:116px; padding-inline:8px; gap:5px; font-size:11px; }
     }
+  
+    /* CHATCITY v27: 한 장의 정방형 지도를 확대해서 드래그 탐색합니다.
+       핀 좌표는 이미지 자체의 정방형 좌표이므로 PC/모바일에서 동일하게 유지됩니다. */
+    .map-viewport { touch-action:none; overflow:hidden; cursor:grab; }
+    .map-world {
+      position:absolute; inset:auto; top:0; left:0;
+      width:1100px; height:1100px;
+      transform-origin:top left; will-change:transform;
+    }
+    .map-art { position:absolute; inset:0; }
+    .map-image { object-fit:cover; image-rendering:auto; }
+    .map-world .pin {
+      transform:translate(-50%,-50%) scale(var(--pin-inverse-zoom, 1));
+      transform-origin:center center;
+      transition:filter .16s;
+    }
+    .map-viewport.dragging { cursor:grabbing; }
+    .map-viewport.dragging .pin { pointer-events:none; }
+
+  
+    /* ===== CHATCITY v28 — anchor-based map speech labels =====
+       The position is the little tail's endpoint, which points to the roof.
+       The inverse zoom keeps legible callouts the same visual size as the map is zoomed. */
+    .map-world .pin {
+      display:flex;
+      position:absolute;
+      flex-direction:column;
+      align-items:center;
+      gap:0;
+      padding:0;
+      width:max-content;
+      max-width:180px;
+      height:auto;
+      background:transparent;
+      border:0;
+      box-shadow:none;
+      filter:drop-shadow(0 3px 5px rgba(45,29,13,.18));
+      cursor:pointer;
+      transform:translate(-50%,-100%) scale(var(--pin-inverse-zoom, 1));
+      transform-origin:50% 100%;
+      transition:filter .15s ease;
+      z-index:8;
+    }
+    .map-world .pin:hover,
+    .map-world .pin.active { z-index:15; filter:drop-shadow(0 5px 8px rgba(45,29,13,.25)); }
+    .map-world .pin .pin-label {
+      position:relative;
+      display:block;
+      min-height:30px;
+      box-sizing:border-box;
+      max-width:170px;
+      white-space:normal;
+      color:#38281c;
+      background:#fffdf5;
+      border:1px solid rgba(94,68,38,.22);
+      border-radius:11px;
+      box-shadow:none;
+      font-size:11px;
+      line-height:1.2;
+      font-weight:800;
+      letter-spacing:-.02em;
+      padding:8px 11px;
+      text-align:center;
+      word-break:keep-all;
+      overflow-wrap:normal;
+      pointer-events:none;
+      margin-bottom:9px;
+    }
+    .map-world .pin .pin-label::after {
+      content:'';
+      display:block;
+      position:absolute;
+      left:50%; bottom:-6px;
+      width:11px; height:11px;
+      background:#fffdf5;
+      border-right:1px solid rgba(94,68,38,.22);
+      border-bottom:1px solid rgba(94,68,38,.22);
+      transform:translateX(-50%) rotate(45deg);
+      border-radius:1px;
+      pointer-events:none;
+    }
+    .map-world .pin.active .pin-label {
+      background:#26110e; color:#fff;
+      border-color:#26110e;
+    }
+    .map-world .pin.active .pin-label::after {
+      background:#26110e; border-right-color:#26110e; border-bottom-color:#26110e;
+    }
+    .map-world .pin:hover .pin-label {
+      border-color:#9d8261;
+    }
+    @media (max-width:760px) {
+      .map-world .pin { max-width:148px; padding:0; gap:0; }
+      .map-world .pin .pin-label {
+        max-width:144px;
+        min-height:33px;
+        margin-bottom:9px;
+        font-size:11px;
+        line-height:1.25;
+        border-radius:10px;
+        padding:8px 10px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -667,10 +771,10 @@
 
     <div class="content">
       <section class="map-card" aria-label="CHATCITY 지도">
-        <div class="map-viewport" id="mapViewport" aria-label="마을 지도 영역. 마우스 휠 또는 오른쪽 아래 버튼으로 확대 축소할 수 있습니다.">
+        <div class="map-viewport" id="mapViewport" aria-label="CHATCITY 탐색 지도. 드래그하여 이동하고, 마우스 휠 또는 두 손가락으로 확대 축소합니다.">
           <div class="map-world" id="mapWorld">
             <div class="map-art" id="mapArt" aria-label="시간대별 CHATCITY 마을 지도">
-              <!-- assets 폴더에 map-morning.png, map-day.png, map-evening.png, map-night.png를 넣으면 자동 표시됩니다. -->
+              <!-- 낮 이미지(map-day.png)가 기본이며 아침·노을·밤은 같은 구도의 파일을 추가하면 자동으로 바뀝니다. -->
               <img class="map-image" id="mapImage" alt="CHATCITY 마을 지도" hidden>
               <div class="map-placeholder" aria-hidden="true">
                 <svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 12l11-5 12 5 11-5v28l-11 5-12-5-11 5V12Z"/><path d="M18 7v28M30 12v28"/></svg>
@@ -679,18 +783,18 @@
             </div>
             <!-- 지도 이미지는 4개 시간대별로 자동 교체됩니다. 장소 좌표는 시간대와 무관하게 유지됩니다. -->
 
-            <button type="button" class="pin" data-place="tarot" style="left:83%;top:28%" aria-label="타로점 선택"><span class="pin-icon" aria-hidden="true">🔮</span><span class="pin-label">타로점</span></button>
-            <button type="button" class="pin" data-place="crown" style="left:54%;top:44%" aria-label="The Crown 빌딩 선택"><span class="pin-icon" aria-hidden="true">🏙️</span><span class="pin-label">The Crown 빌딩</span></button>
-            <button type="button" class="pin" data-place="smallpark" style="left:22%;top:57%" aria-label="작은 공원 선택"><span class="pin-icon" aria-hidden="true">🌿</span><span class="pin-label">작은 공원</span></button>
-            <button type="button" class="pin" data-place="outskirtsCafe" style="left:28%;top:39%" aria-label="카페 선택"><span class="pin-icon" aria-hidden="true">☕</span><span class="pin-label">카페</span></button>
-            <button type="button" class="pin" data-place="flowerbed" style="left:39%;top:69%" aria-label="아파트 단지 앞 화단 선택"><span class="pin-icon" aria-hidden="true">🌷</span><span class="pin-label">아파트 단지 앞 화단</span></button>
-            <button type="button" class="pin" data-place="bookstore" style="left:69%;top:74%" aria-label="작은 서점 선택"><span class="pin-icon" aria-hidden="true">📖</span><span class="pin-label">작은 서점</span></button>
-            <button type="button" class="pin" data-place="hillhouse" style="left:16%;top:23%" aria-label="언덕 위 집 선택"><span class="pin-icon" aria-hidden="true">🏡</span><span class="pin-label">언덕 위 집</span></button>
-            <button type="button" class="pin" data-place="detectiveOffice" style="left:73%;top:52%" aria-label="탐정 사무소 선택"><span class="pin-icon" aria-hidden="true">🔎</span><span class="pin-label">탐정 사무소</span></button>
+            <button type="button" class="pin" data-place="tarot" style="left:89.3%;top:16.8%" aria-label="타로점 선택"><span class="pin-label">타로점</span></button>
+            <button type="button" class="pin" data-place="crown" style="left:53.9%;top:28.7%" aria-label="The Crown 빌딩 선택"><span class="pin-label">The Crown 빌딩</span></button>
+            <button type="button" class="pin" data-place="smallpark" style="left:12.4%;top:38.7%" aria-label="작은 공원 선택"><span class="pin-label">작은 공원</span></button>
+            <button type="button" class="pin" data-place="outskirtsCafe" style="left:25.6%;top:21.4%" aria-label="카페 선택"><span class="pin-label">카페</span></button>
+            <button type="button" class="pin" data-place="flowerbed" style="left:41.6%;top:65.1%" aria-label="아파트 단지 앞 화단 선택"><span class="pin-label">아파트 단지 앞 화단</span></button>
+            <button type="button" class="pin" data-place="bookstore" style="left:69.3%;top:62.4%" aria-label="작은 서점 선택"><span class="pin-label">작은 서점</span></button>
+            <button type="button" class="pin" data-place="hillhouse" style="left:10.2%;top:8.6%" aria-label="언덕 위 집 선택"><span class="pin-label">언덕 위 집</span></button>
+            <button type="button" class="pin" data-place="detectiveOffice" style="left:79.6%;top:42.7%" aria-label="탐정 사무소 선택"><span class="pin-label">탐정 사무소</span></button>
           </div>
           <div class="map-sticker"><small>EXPLORE THE TOWN</small><strong>CHATCITY ✳</strong></div>
           <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="장소 목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">장소 목록</span></button>
-          <div class="mobile-map-hint" id="mobileMapHint" aria-hidden="true">지도 아이콘을 눌러 장소를 탐색하세요</div>
+          <div class="mobile-map-hint" id="mobileMapHint" aria-hidden="true">지도를 움직여 장소를 탐색하세요</div>
           <div class="zoom-tools" aria-label="지도 확대 축소">
             <button type="button" id="zoomOut" title="축소" aria-label="지도 축소">−</button>
             <output id="zoomValue" aria-live="off">100%</output>
@@ -1060,24 +1164,26 @@
     const period = getMapPeriod(new Date().getHours());
     if (period === activeMapPeriod) return;
     activeMapPeriod = period;
-    const path = MAP_IMAGES[period];
-    mapImage.hidden = true;
-    mapArt.classList.remove('has-map-image');
-    // 파일이 아직 없다면 깨진 이미지 대신 기존 빈 지도 화면을 유지합니다.
-    const preload = new Image();
-    preload.onload = () => {
+    const candidates = period === 'day' ? [MAP_IMAGES.day] : [MAP_IMAGES[period], MAP_IMAGES.day];
+    const loadCandidate = (index) => {
       if (activeMapPeriod !== period) return;
-      mapImage.src = path;
-      mapImage.alt = `CHATCITY ${MAP_PERIOD_LABELS[period]} 지도`;
-      mapImage.hidden = false;
-      mapArt.classList.add('has-map-image');
+      if (index >= candidates.length) {
+        mapImage.hidden = true;
+        mapArt.classList.remove('has-map-image');
+        return;
+      }
+      const testImage = new Image();
+      testImage.onload = () => {
+        if (activeMapPeriod !== period) return;
+        mapImage.src = candidates[index];
+        mapImage.alt = candidates[index] === MAP_IMAGES.day ? 'CHATCITY 낮 지도' : `CHATCITY ${MAP_PERIOD_LABELS[period]} 지도`;
+        mapImage.hidden = false;
+        mapArt.classList.add('has-map-image');
+      };
+      testImage.onerror = () => loadCandidate(index + 1);
+      testImage.src = candidates[index];
     };
-    preload.onerror = () => {
-      if (activeMapPeriod !== period) return;
-      mapImage.hidden = true;
-      mapArt.classList.remove('has-map-image');
-    };
-    preload.src = path;
+    loadCandidate(0);
   }
 
   updateMapByTime();
@@ -1093,116 +1199,164 @@
   const zoomValue = document.getElementById('zoomValue');
   const zoomInButton = document.getElementById('zoomIn');
   const zoomOutButton = document.getElementById('zoomOut');
+  const resetButton = document.getElementById('zoomReset');
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const placePins = Object.fromEntries(
+    [...world.querySelectorAll('.pin[data-place]')].map(pin => [pin.dataset.place, pin])
+  );
+  const MAP_CENTER = { x: 0.535, y: 0.46 };  // 도심이 처음 보이는 위치
+  const MAX_ZOOM = 3.2;
+  let worldSize = 1100;
   let zoom = 1;
   let panX = 0;
   let panY = 0;
-  const ZOOM_MIN = 1;
-  const ZOOM_MAX = 3;
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  let minZoom = 0.7;
+  let initializedMap = false;
+
+  function fitLimits() {
+    // 지도가 화면보다 크게 펼쳐지되, PC와 모바일에서 건물 비율은 일정합니다.
+    const isMobile = window.matchMedia('(max-width: 760px)').matches;
+    const w = viewport.clientWidth, h = viewport.clientHeight;
+    worldSize = isMobile
+      ? Math.max(1020, Math.round(h * 1.62))
+      : Math.max(1050, Math.round(w * 1.50));
+    world.style.width = `${worldSize}px`;
+    world.style.height = `${worldSize}px`;
+    minZoom = Math.min(1, Math.max(w, h) / worldSize);
+  }
+  function clampPan() {
+    const scaled = worldSize * zoom;
+    panX = clamp(panX, viewport.clientWidth - scaled, 0);
+    panY = clamp(panY, viewport.clientHeight - scaled, 0);
+  }
   function renderMap() {
-    const width = viewport.clientWidth;
-    const height = viewport.clientHeight;
-    panX = clamp(panX, width * (1 - zoom), 0);
-    panY = clamp(panY, height * (1 - zoom), 0);
-    world.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+    clampPan();
+    world.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`;
+    // 핀은 배경 지도와 함께 이동하되 스크린상 크기는 일정하게 유지합니다.
+    world.style.setProperty('--pin-inverse-zoom', String(1 / zoom));
     zoomValue.textContent = Math.round(zoom * 100) + '%';
-    zoomInButton.disabled = zoom >= ZOOM_MAX;
-    zoomOutButton.disabled = zoom <= ZOOM_MIN;
+    zoomInButton.disabled = zoom >= MAX_ZOOM - 0.001;
+    zoomOutButton.disabled = zoom <= minZoom + 0.001;
+  }
+  function focusPoint(x, y) {
+    panX = viewport.clientWidth / 2 - worldSize * zoom * x;
+    panY = viewport.clientHeight / 2 - worldSize * zoom * y;
+    renderMap();
   }
   function zoomTo(nextZoom, screenX = viewport.clientWidth / 2, screenY = viewport.clientHeight / 2) {
-    nextZoom = Math.round(clamp(nextZoom, ZOOM_MIN, ZOOM_MAX) * 1000) / 1000;
-    const factor = nextZoom / zoom;
+    const z = Math.round(clamp(nextZoom, minZoom, MAX_ZOOM) * 1000) / 1000;
+    const factor = z / zoom;
     panX = screenX - (screenX - panX) * factor;
     panY = screenY - (screenY - panY) * factor;
-    zoom = nextZoom;
+    zoom = z;
     renderMap();
+  }
+  function resetMap() {
+    zoom = 1;
+    focusPoint(MAP_CENTER.x, MAP_CENTER.y);
+  }
+  function resizeMap() {
+    const centerMapX = initializedMap ? (viewport.clientWidth / 2 - panX) / (worldSize * zoom) : MAP_CENTER.x;
+    const centerMapY = initializedMap ? (viewport.clientHeight / 2 - panY) / (worldSize * zoom) : MAP_CENTER.y;
+    fitLimits();
+    if (!initializedMap) {
+      zoom = 1;
+      initializedMap = true;
+    } else {
+      zoom = clamp(zoom, minZoom, MAX_ZOOM);
+    }
+    focusPoint(clamp(centerMapX, 0, 1), clamp(centerMapY, 0, 1));
   }
   zoomInButton.addEventListener('click', () => zoomTo(zoom * 1.25));
   zoomOutButton.addEventListener('click', () => zoomTo(zoom / 1.25));
-  document.getElementById('zoomReset').addEventListener('click', () => { zoom = 1; panX = 0; panY = 0; renderMap(); });
+  resetButton.addEventListener('click', resetMap);
   viewport.addEventListener('wheel', event => {
     if (event.target.closest('.zoom-tools')) return;
     event.preventDefault();
     const rect = viewport.getBoundingClientRect();
-    const delta = Math.exp(-event.deltaY * .0015);
-    zoomTo(zoom * delta, event.clientX - rect.left, event.clientY - rect.top);
+    zoomTo(zoom * Math.exp(-event.deltaY * 0.00125), event.clientX - rect.left, event.clientY - rect.top);
   }, { passive: false });
 
-  // 마우스 드래그 + 터치 한 손가락 이동 + 두 손가락 핀치 줌.
-  // 지도 전체(mapWorld)를 변형하므로 장소 핀은 지도와 같은 좌표를 유지합니다.
+  // 장소 목록에서 선택하면 지도도 그 장소 위치로 이동합니다.
+  function focusPlaceOnMap(id) {
+    const pin = placePins[id];
+    if (!pin) return;
+    const x = parseFloat(pin.style.left) / 100;
+    const y = parseFloat(pin.style.top) / 100;
+    focusPoint(x, y);
+  }
+  document.querySelectorAll('.nav-item[data-place]').forEach(button => {
+    button.addEventListener('click', () => focusPlaceOnMap(button.dataset.place));
+  });
+
+  // 터치 한 손가락 = 이동, 두 손가락 = 이동과 핀치 줌. 마우스 드래그도 동일.
   const pointers = new Map();
   let drag = null;
   let pinch = null;
-  const pointerPoint = event => ({ x: event.clientX, y: event.clientY });
-  function pinchMetrics() {
-    const two = Array.from(pointers.values()).slice(0,2);
-    const dx = two[1].x - two[0].x, dy = two[1].y - two[0].y;
-    return {
-      distance: Math.max(1, Math.hypot(dx,dy)),
-      x: (two[0].x + two[1].x)/2,
-      y: (two[0].y + two[1].y)/2
-    };
+  let wasDragged = false;
+  const at = event => ({ x: event.clientX, y: event.clientY });
+  function metrics() {
+    const [a,b] = Array.from(pointers.values()).slice(0,2);
+    return { x:(a.x+b.x)/2, y:(a.y+b.y)/2, distance: Math.max(1, Math.hypot(a.x-b.x, a.y-b.y)) };
   }
   viewport.addEventListener('pointerdown', event => {
     if (event.button !== 0 || event.target.closest('button')) return;
-    if (event.pointerType === 'touch') {
-      pointers.set(event.pointerId, pointerPoint(event));
-      if (pointers.size === 2) {
-        drag = null;
-        pinch = pinchMetrics();
-        viewport.classList.add('dragging');
-      } else if (pointers.size === 1 && zoom > 1) {
-        drag = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
-      }
-      viewport.setPointerCapture(event.pointerId);
-      return;
-    }
-    if (zoom === 1) return;
-    drag = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
+    pointers.set(event.pointerId, at(event));
     viewport.setPointerCapture(event.pointerId);
+    if (pointers.size === 2) {
+      drag = null;
+      pinch = metrics();
+    } else if (pointers.size === 1) {
+      drag = { id:event.pointerId, x:event.clientX, y:event.clientY, panX, panY };
+    }
     viewport.classList.add('dragging');
   });
   viewport.addEventListener('pointermove', event => {
-    if (pointers.has(event.pointerId)) pointers.set(event.pointerId, pointerPoint(event));
+    if (!pointers.has(event.pointerId)) return;
+    pointers.set(event.pointerId, at(event));
     if (pointers.size >= 2 && pinch) {
-      const next = pinchMetrics();
-      const rect = viewport.getBoundingClientRect();
-      const factor = next.distance/pinch.distance;
-      zoomTo(zoom * factor, next.x - rect.left, next.y - rect.top);
-      panX += next.x - pinch.x;
-      panY += next.y - pinch.y;
+      const now = metrics();
+      const box = viewport.getBoundingClientRect();
+      zoomTo(zoom * now.distance / pinch.distance, now.x-box.left, now.y-box.top);
+      panX += now.x - pinch.x;
+      panY += now.y - pinch.y;
       renderMap();
-      pinch = next;
+      pinch = now;
+      wasDragged = true;
       return;
     }
     if (!drag || drag.id !== event.pointerId) return;
     panX = drag.panX + event.clientX - drag.x;
     panY = drag.panY + event.clientY - drag.y;
     renderMap();
+    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 5) wasDragged = true;
   });
-  function stopDrag(event) {
-    if (pointers.has(event.pointerId)) pointers.delete(event.pointerId);
+  function releasePointer(event) {
+    pointers.delete(event.pointerId);
     if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
-    if (pinch && pointers.size < 2) {
-      pinch = null;
+    if (pointers.size < 2) pinch = null;
+    if (pointers.size === 1) {
+      const [id, point] = pointers.entries().next().value;
+      drag = { id, x:point.x, y:point.y, panX, panY };
+    } else if (pointers.size === 0) {
       drag = null;
-      if (pointers.size === 1 && zoom > 1) {
-        const [id, pt] = pointers.entries().next().value;
-        drag = { id, x:pt.x, y:pt.y, panX, panY };
-      }
-    } else if (drag && drag.id === event.pointerId) drag = null;
-    if (!pinch && !drag) viewport.classList.remove('dragging');
+      viewport.classList.remove('dragging');
+    }
+    if (pointers.size === 0) setTimeout(() => { wasDragged = false; }, 0);
   }
-  viewport.addEventListener('pointerup', stopDrag);
-  viewport.addEventListener('pointercancel', stopDrag);
+  viewport.addEventListener('pointerup', releasePointer);
+  viewport.addEventListener('pointercancel', releasePointer);
   viewport.addEventListener('lostpointercapture', event => {
     pointers.delete(event.pointerId);
-    if (pointers.size < 2) pinch = null;
-    if (drag && drag.id === event.pointerId) drag = null;
-    if (!pinch && !drag) viewport.classList.remove('dragging');
+    if (!pointers.size) { drag = null; pinch = null; viewport.classList.remove('dragging'); }
   });
-  window.addEventListener('resize', renderMap);
-  renderMap();
+  // 클릭으로는 핀 상세가 열리고, 드래그가 끝난 직후의 클릭은 무시합니다.
+  viewport.addEventListener('click', event => {
+    if (wasDragged && event.target.closest('.pin')) event.stopImmediatePropagation();
+  }, true);
+  window.addEventListener('resize', resizeMap);
+  resizeMap();
+
 </script>
 
 <script>
