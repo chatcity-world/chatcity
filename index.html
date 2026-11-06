@@ -786,6 +786,29 @@
       line-height: 1.8;
       color: #776b52;
     }
+  
+    /* v60: current registered NPC population beside the lorebook buttons. */
+    .top-actions { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+    .population-meter {
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:4px; white-space:nowrap; flex-shrink:0;
+      color:#786f56; font-size:12px; font-weight:700;
+    }
+    .population-meter strong { color:#26110e; font-weight:850; font-variant-numeric:tabular-nums; }
+    .population-mobile { display:none; }
+    @media (max-width:760px) {
+      .population-mobile { display:inline-flex; margin-left:auto; gap:3px; font-size:11px; }
+      .mobile-topbar-brand { flex:1 1 auto; }
+    }
+    @media (max-width:370px) {
+      .mobile-topbar { gap:5px; }
+      .mobile-topbar-brand { gap:5px; }
+      .mobile-topbar-brand small { display:none; }
+      .mobile-topbar-brand strong { font-size:12px; letter-spacing:.035em; }
+      .mobile-logo-mark { width:32px; height:32px; flex:none; }
+      .population-mobile { font-size:10px; }
+      .mobile-download-trigger { min-width:106px; height:36px; padding-inline:6px; font-size:10px; gap:3px; }
+    }
   </style>
 </head>
 <body>
@@ -795,6 +818,7 @@
       <div class="mobile-logo-mark"><img src="assets/chatcity-logo.png" alt=""></div>
       <div><strong>CHATCITY</strong><small>CHATCITY WORLD</small></div>
     </div>
+    <span class="population-meter population-mobile" title="현재 등록된 NPC 인구">👥 <strong data-population-count>—</strong>명</span>
     <button type="button" class="mobile-download-trigger" id="mobileDownload" aria-label="로어북 다운" title="로어북 다운"><span class="mobile-download-arrow" aria-hidden="true">↓</span><span>로어북 다운</span></button>
   </header>
   <button type="button" class="mobile-menu-backdrop" id="mobileMenuBackdrop" aria-label="장소 메뉴 닫기" tabindex="-1"></button>
@@ -810,37 +834,48 @@
       <section class="nav-group" data-group="downtown" aria-label="도심">
         <button class="nav-group-toggle" type="button" aria-controls="nav-group-downtown" aria-expanded="true"><span class="nav-group-label">🏙 <span>도심</span></span><span class="nav-group-side"><span class="nav-group-count" data-group-count="downtown">1</span><span class="nav-group-chevron" aria-hidden="true">⌄</span></span></button>
         <div class="nav-group-body" id="nav-group-downtown">
-
         <button type="button" class="nav-item" data-place="crown"><span class="nav-icon" aria-hidden="true">👑</span><span class="nav-label">더 크라운</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="buildingForest"><span class="nav-icon" aria-hidden="true">🏙️</span><span class="nav-label">빌딩숲</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="sewer"><span class="nav-icon" aria-hidden="true">🕳️</span><span class="nav-label">하수구</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="busStop"><span class="nav-icon" aria-hidden="true">🚏</span><span class="nav-label">버스 정류장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="penthouse"><span class="nav-icon" aria-hidden="true">🏢</span><span class="nav-label">고층 펜트하우스</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="buildingForest"><span class="nav-icon" aria-hidden="true">🏙️</span><span class="nav-label">빌딩숲</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="elephantShop"><span class="nav-icon" aria-hidden="true">🐘</span><span class="nav-label">코끼리도 춤을 춘다</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="penthouse"><span class="nav-icon" aria-hidden="true">🏢</span><span class="nav-label">펜트하우스</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="sewer"><span class="nav-icon" aria-hidden="true">🕳️</span><span class="nav-label">하수구</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         </div>
       </section>
       <section class="nav-group" data-group="outskirts" aria-label="외곽 마을">
         <button class="nav-group-toggle" type="button" aria-controls="nav-group-outskirts" aria-expanded="true"><span class="nav-group-label">🌾 <span>외곽 마을</span></span><span class="nav-group-side"><span class="nav-group-count" data-group-count="outskirts">5</span><span class="nav-group-chevron" aria-hidden="true">⌄</span></span></button>
         <div class="nav-group-body" id="nav-group-outskirts">
-
-        <button type="button" class="nav-item" data-place="tarot"><span class="nav-icon" aria-hidden="true">🔮</span><span class="nav-label">타로점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="smallpark"><span class="nav-icon" aria-hidden="true">🌿</span><span class="nav-label">작은 공원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="outskirtsCafe"><span class="nav-icon" aria-hidden="true">☕</span><span class="nav-label">카페</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="flowerbed"><span class="nav-icon" aria-hidden="true">🌷</span><span class="nav-label">화단</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="bookstore"><span class="nav-icon" aria-hidden="true">📖</span><span class="nav-label">작은 서점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="hillhouse"><span class="nav-icon" aria-hidden="true">🏡</span><span class="nav-label">언덕 위 집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="detectiveOffice"><span class="nav-icon" aria-hidden="true">🔎</span><span class="nav-label">탐정 사무소</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="repairShop"><span class="nav-icon" aria-hidden="true">🛠️</span><span class="nav-label">선박 수리 작업장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="dockBar"><span class="nav-icon" aria-hidden="true">🍺</span><span class="nav-label">부두 근처 바</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="police"><span class="nav-icon" aria-hidden="true">🚓</span><span class="nav-label">파출소</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="largePark"><span class="nav-icon" aria-hidden="true">🌳</span><span class="nav-label">공원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="pond"><span class="nav-icon" aria-hidden="true">🦆</span><span class="nav-label">연못</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="laLaLola"><span class="nav-icon" aria-hidden="true">👗</span><span class="nav-label">La La Lola</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="alley"><span class="nav-icon" aria-hidden="true">🏘️</span><span class="nav-label">골목길</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="jangseung"><span class="nav-icon" aria-hidden="true">🪧</span><span class="nav-label">마을 초입</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="postbox"><span class="nav-icon" aria-hidden="true">📮</span><span class="nav-label">우체통</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="detachedHouse"><span class="nav-icon" aria-hidden="true">🏠</span><span class="nav-label">단독 주택</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="largePark"><span class="nav-icon" aria-hidden="true">🌳</span><span class="nav-label">공원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="church"><span class="nav-icon" aria-hidden="true">⛪</span><span class="nav-label">교회</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="oldHouse"><span class="nav-icon" aria-hidden="true">🏚️</span><span class="nav-label">낡은 단독 주택</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="farmhouse"><span class="nav-icon" aria-hidden="true">🌾</span><span class="nav-label">농사꾼의 집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
-        <button type="button" class="nav-item" data-place="villageMarket"><span class="nav-icon" aria-hidden="true">🛒</span><span class="nav-label">마을 시장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="farm"><span class="nav-icon" aria-hidden="true">🚜</span><span class="nav-label">농장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="detachedHouse"><span class="nav-icon" aria-hidden="true">🏠</span><span class="nav-label">단독 주택</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="gamblingHouse"><span class="nav-icon" aria-hidden="true">🎲</span><span class="nav-label">도박장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="library"><span class="nav-icon" aria-hidden="true">📚</span><span class="nav-label">도서관</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="backAlley"><span class="nav-icon" aria-hidden="true">🌑</span><span class="nav-label">뒷골목</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="backMountain"><span class="nav-icon" aria-hidden="true">⛰️</span><span class="nav-label">마을 뒷 산</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="villageMarket"><span class="nav-icon" aria-hidden="true">🛒</span><span class="nav-label">마을 시장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="jangseung"><span class="nav-icon" aria-hidden="true">🪧</span><span class="nav-label">마을 초입</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="dockBar"><span class="nav-icon" aria-hidden="true">🍺</span><span class="nav-label">부두 근처 바</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="repairShop"><span class="nav-icon" aria-hidden="true">🛠️</span><span class="nav-label">선박 수리 작업장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="shoeShop"><span class="nav-icon" aria-hidden="true">👞</span><span class="nav-label">수제화 가게</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="hillhouse"><span class="nav-icon" aria-hidden="true">🏡</span><span class="nav-label">언덕 위 집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="pond"><span class="nav-icon" aria-hidden="true">🦆</span><span class="nav-label">연못</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="postbox"><span class="nav-icon" aria-hidden="true">📮</span><span class="nav-label">우체통</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="smallpark"><span class="nav-icon" aria-hidden="true">🌿</span><span class="nav-label">작은 공원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="bookstore"><span class="nav-icon" aria-hidden="true">📖</span><span class="nav-label">작은 서점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="mentalHospital"><span class="nav-icon" aria-hidden="true">🏥</span><span class="nav-label">정신병원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="sauna"><span class="nav-icon" aria-hidden="true">♨️</span><span class="nav-label">찜질방</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="outskirtsCafe"><span class="nav-icon" aria-hidden="true">☕</span><span class="nav-label">카페</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="tarot"><span class="nav-icon" aria-hidden="true">🔮</span><span class="nav-label">타로점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="detectiveOffice"><span class="nav-icon" aria-hidden="true">🔎</span><span class="nav-label">탐정 사무소</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="police"><span class="nav-icon" aria-hidden="true">🚓</span><span class="nav-label">파출소</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="convenienceStore"><span class="nav-icon" aria-hidden="true">🏪</span><span class="nav-label">편의점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="gym"><span class="nav-icon" aria-hidden="true">🏋️</span><span class="nav-label">헬스장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="flowerbed"><span class="nav-icon" aria-hidden="true">🌷</span><span class="nav-label">화단</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         </div>
       </section>
     </nav>
@@ -848,7 +883,7 @@
   </aside>
 
   <main class="main">
-    <div class="topline"><div class="crumb">WORLD LIBRARY <span aria-hidden="true">/</span> <b>CHATCITY</b></div><button type="button" class="download-button" id="downloadLorebook" aria-haspopup="dialog"><span class="download-glyph" aria-hidden="true">↓</span>로어북 다운받기</button></div>
+    <div class="topline"><div class="crumb">WORLD LIBRARY <span aria-hidden="true">/</span> <b>CHATCITY</b></div><div class="top-actions"><span class="population-meter population-desktop">👥 현재 인구 <strong data-population-count>—</strong>명</span><button type="button" class="download-button" id="downloadLorebook" aria-haspopup="dialog"><span class="download-glyph" aria-hidden="true">↓</span>로어북 다운받기</button></div></div>
     <header class="headline"><div><div class="eyebrow">AN INTERACTIVE LOREBOOK</div><h1>Welcome to CHATCITY.</h1><p>지도에서 장소를 선택하세요.</p></div></header>
 
     <div class="content">
@@ -865,37 +900,56 @@
             </div>
             <!-- 지도 이미지는 4개 시간대별로 자동 교체됩니다. 장소 좌표는 시간대와 무관하게 유지됩니다. -->
 
-            <button type="button" class="pin" data-place="tarot" style="left:72.2%;top:29%" aria-label="타로점 선택"><span class="pin-label"><span class="pin-text">타로점</span></span></button>
-            <button type="button" class="pin" data-place="crown" style="left:52.8%;top:32%" aria-label="더 크라운 선택"><span class="pin-label"><span class="pin-text">더 크라운</span></span></button>
-            <button type="button" class="pin" data-place="smallpark" style="left:26.5%;top:43%" aria-label="작은 공원 선택"><span class="pin-label"><span class="pin-text">작은 공원</span></span></button>
-            <button type="button" class="pin" data-place="outskirtsCafe" style="left:35%;top:30%" aria-label="카페 선택"><span class="pin-label"><span class="pin-text">카페</span></span></button>
-            <button type="button" class="pin" data-place="flowerbed" style="left:46.5%;top:55%" aria-label="화단 선택"><span class="pin-label"><span class="pin-text">화단</span></span></button>
-            <button type="button" class="pin" data-place="bookstore" style="left:63.2%;top:53.5%" aria-label="작은 서점 선택"><span class="pin-label"><span class="pin-text">작은 서점</span></span></button>
-            <button type="button" class="pin" data-place="hillhouse" style="left:26%;top:20.5%" aria-label="언덕 위 집 선택"><span class="pin-label"><span class="pin-text">언덕 위 집</span></span></button>
-            <button type="button" class="pin" data-place="detectiveOffice" style="left:67.2%;top:42%" aria-label="탐정 사무소 선택"><span class="pin-label"><span class="pin-text">탐정 사무소</span></span></button>
+            <button type="button" class="pin" data-place="tarot" style="left:68%;top:26%" aria-label="타로점 선택"><span class="pin-label"><span class="pin-text">타로점</span></span></button>
+            <button type="button" class="pin" data-place="crown" style="left:50.6%;top:37.5%" aria-label="더 크라운 선택"><span class="pin-label"><span class="pin-text">더 크라운</span></span></button>
+            <button type="button" class="pin" data-place="smallpark" style="left:30.2%;top:47%" aria-label="작은 공원 선택"><span class="pin-label"><span class="pin-text">작은 공원</span></span></button>
+            <button type="button" class="pin" data-place="outskirtsCafe" style="left:36.5%;top:34%" aria-label="카페 선택"><span class="pin-label"><span class="pin-text">카페</span></span></button>
+            <button type="button" class="pin" data-place="flowerbed" style="left:28%;top:56%" aria-label="화단 선택"><span class="pin-label"><span class="pin-text">화단</span></span></button>
+            <button type="button" class="pin" data-place="bookstore" style="left:55%;top:59%" aria-label="작은 서점 선택"><span class="pin-label"><span class="pin-text">작은 서점</span></span></button>
+            <button type="button" class="pin" data-place="hillhouse" style="left:17%;top:13.5%" aria-label="언덕 위 집 선택"><span class="pin-label"><span class="pin-text">언덕 위 집</span></span></button>
+            <button type="button" class="pin" data-place="detectiveOffice" style="left:61%;top:54.4%" aria-label="탐정 사무소 선택"><span class="pin-label"><span class="pin-text">탐정 사무소</span></span></button>
             <!-- 새 장소 8곳: 아래의 left/top 좌표는 임시 위치입니다. 지도를 보며 직접 수정하세요. -->
-            <button type="button" class="pin" data-place="repairShop" style="left:30%;top:74%" aria-label="선박 수리 작업장 선택"><span class="pin-label"><span class="pin-text">선박 수리 작업장</span></span></button>
-            <button type="button" class="pin" data-place="dockBar" style="left:37%;top:74%" aria-label="부두 근처 바 선택"><span class="pin-label"><span class="pin-text">부두 근처 바</span></span></button>
-            <button type="button" class="pin" data-place="police" style="left:35.5%;top:63%" aria-label="파출소 선택"><span class="pin-label"><span class="pin-text">파출소</span></span></button>
-            <button type="button" class="pin" data-place="largePark" style="left:59%;top:25%" aria-label="공원 선택"><span class="pin-label"><span class="pin-text">공원</span></span></button>
-            <button type="button" class="pin" data-place="pond" style="left:47%;top:27%" aria-label="연못 선택"><span class="pin-label"><span class="pin-text">연못</span></span></button>
-            <button type="button" class="pin" data-place="alley" style="left:68%;top:36%" aria-label="골목길 선택"><span class="pin-label"><span class="pin-text">골목길</span></span></button>
-            <button type="button" class="pin" data-place="buildingForest" style="left:58%;top:40%" aria-label="빌딩숲 선택"><span class="pin-label"><span class="pin-text">빌딩숲</span></span></button>
-            <button type="button" class="pin" data-place="sewer" style="left:35%;top:40%" aria-label="하수구 선택"><span class="pin-label"><span class="pin-text">하수구</span></span></button>
+            <button type="button" class="pin" data-place="repairShop" style="left:34.5%;top:71.2%" aria-label="선박 수리 작업장 선택"><span class="pin-label"><span class="pin-text">선박 수리 작업장</span></span></button>
+            <button type="button" class="pin" data-place="dockBar" style="left:39.5%;top:71.2%" aria-label="부두 근처 바 선택"><span class="pin-label"><span class="pin-text">부두 근처 바</span></span></button>
+            <button type="button" class="pin" data-place="police" style="left:38.2%;top:62.5%" aria-label="파출소 선택"><span class="pin-label"><span class="pin-text">파출소</span></span></button>
+            <button type="button" class="pin" data-place="largePark" style="left:55%;top:32%" aria-label="공원 선택"><span class="pin-label"><span class="pin-text">공원</span></span></button>
+            <button type="button" class="pin" data-place="pond" style="left:48%;top:33%" aria-label="연못 선택"><span class="pin-label"><span class="pin-text">연못</span></span></button>
+            <button type="button" class="pin" data-place="alley" style="left:64%;top:33%" aria-label="골목길 선택"><span class="pin-label"><span class="pin-text">골목길</span></span></button>
+            <button type="button" class="pin" data-place="buildingForest" style="left:55%;top:42%" aria-label="빌딩숲 선택"><span class="pin-label"><span class="pin-text">빌딩숲</span></span></button>
+            <button type="button" class="pin" data-place="sewer" style="left:79%;top:46%" aria-label="하수구 선택"><span class="pin-label"><span class="pin-text">하수구</span></span></button>
             <!-- 버스 정류장 임시 말풍선 위치: left / top 값을 원하는 곳으로 수정하세요. -->
-            <button type="button" class="pin" data-place="busStop" style="left:47%;top:45%" aria-label="버스 정류장 선택"><span class="pin-label"><span class="pin-text">버스 정류장</span></span></button>
+            <button type="button" class="pin" data-place="busStop" style="left:47.7%;top:48.8%" aria-label="버스 정류장 선택"><span class="pin-label"><span class="pin-text">버스 정류장</span></span></button>
             <!-- 새 장소 3곳: 말풍선 위치는 임시값입니다. left/top을 직접 수정하세요. -->
-            <button type="button" class="pin" data-place="penthouse" style="left:47.5%;top:32%" aria-label="고층 펜트하우스 선택"><span class="pin-label"><span class="pin-text">고층 펜트하우스</span></span></button>
-            <button type="button" class="pin" data-place="jangseung" style="left:87.5%;top:76.5%" aria-label="마을 초입 선택"><span class="pin-label"><span class="pin-text">마을 초입</span></span></button>
-            <button type="button" class="pin" data-place="postbox" style="left:17.5%;top:24.5%" aria-label="우체통 선택"><span class="pin-label"><span class="pin-text">우체통</span></span></button>
+            <button type="button" class="pin" data-place="penthouse" style="left:48.5%;top:40%" aria-label="펜트하우스 선택"><span class="pin-label"><span class="pin-text">펜트하우스</span></span></button>
+            <button type="button" class="pin" data-place="jangseung" style="left:79.5%;top:73%" aria-label="마을 초입 선택"><span class="pin-label"><span class="pin-text">마을 초입</span></span></button>
+            <button type="button" class="pin" data-place="postbox" style="left:29%;top:34%" aria-label="우체통 선택"><span class="pin-label"><span class="pin-text">우체통</span></span></button>
             <!-- 단독 주택 말풍선 임시 위치: left/top을 직접 수정하세요. -->
-            <button type="button" class="pin" data-place="detachedHouse" style="left:13.5%;top:30.5%" aria-label="단독 주택 선택"><span class="pin-label"><span class="pin-text">단독 주택</span></span></button>
+            <button type="button" class="pin" data-place="detachedHouse" style="left:20%;top:26%" aria-label="단독 주택 선택"><span class="pin-label"><span class="pin-text">단독 주택</span></span></button>
             <!-- 농사꾼의 집 임시 말풍선 위치: 우측 하단, 직접 좌표 변경 가능 -->
-            <button type="button" class="pin" data-place="farmhouse" style="left:71.2%;top:64%" aria-label="농사꾼의 집 선택"><span class="pin-label"><span class="pin-text">농사꾼의 집</span></span></button>
+            <button type="button" class="pin" data-place="farmhouse" style="left:67%;top:63.4%" aria-label="농사꾼의 집 선택"><span class="pin-label"><span class="pin-text">농사꾼의 집</span></span></button>
             <!-- 마을 시장 임시 말풍선 위치: 직접 좌표 변경 가능 -->
-            <button type="button" class="pin" data-place="villageMarket" style="left:79%;top:34%" aria-label="마을 시장 선택"><span class="pin-label"><span class="pin-text">마을 시장</span></span></button>
+            <button type="button" class="pin" data-place="villageMarket" style="left:68%;top:34%" aria-label="마을 시장 선택"><span class="pin-label"><span class="pin-text">마을 시장</span></span></button>
             <!-- 마을 뒷 산 말풍선 임시 위치: 원하는 좌표로 조정하세요. -->
             <button type="button" class="pin" data-place="backMountain" style="left:85%;top:13%" aria-label="마을 뒷 산 선택"><span class="pin-label"><span class="pin-text">마을 뒷 산</span></span></button>
+            <!-- v51: 새 장소 임시 좌표입니다. left/top 값만 직접 조정하시면 됩니다. -->
+            <button type="button" class="pin" data-place="elephantShop" style="left:41.4%;top:53.4%" aria-label="코끼리도 춤을 춘다 선택"><span class="pin-label"><span class="pin-text">코끼리도 춤을 춘다</span></span></button>
+            <button type="button" class="pin" data-place="gym" style="left:29.5%;top:58.5%" aria-label="헬스장 선택"><span class="pin-label"><span class="pin-text">헬스장</span></span></button>
+            <button type="button" class="pin" data-place="convenienceStore" style="left:33%;top:60.5%" aria-label="편의점 선택"><span class="pin-label"><span class="pin-text">편의점</span></span></button>
+            <button type="button" class="pin" data-place="sauna" style="left:37.3%;top:15.5%" aria-label="찜질방 선택"><span class="pin-label"><span class="pin-text">찜질방</span></span></button>
+            <!-- v52 신규 장소: 임시 좌표이며 left/top으로 직접 수정할 수 있습니다. -->
+            <button type="button" class="pin" data-place="mentalHospital" style="left:80.4%;top:27.5%" aria-label="정신병원 선택"><span class="pin-label"><span class="pin-text">정신병원</span></span></button>
+            <button type="button" class="pin" data-place="backAlley" style="left:48%;top:69%" aria-label="뒷골목 선택"><span class="pin-label"><span class="pin-text">뒷골목</span></span></button>
+            <button type="button" class="pin" data-place="gamblingHouse" style="left:93%;top:59%" aria-label="도박장 선택"><span class="pin-label"><span class="pin-text">도박장</span></span></button>
+            <!-- v53 신규 장소: 임시 좌표입니다. left/top 값을 직접 변경하세요. -->
+            <button type="button" class="pin" data-place="farm" style="left:56%;top:78.4%" aria-label="농장 선택"><span class="pin-label"><span class="pin-text">농장</span></span></button>
+            <button type="button" class="pin" data-place="shoeShop" style="left:72%;top:47%" aria-label="수제화 가게 선택"><span class="pin-label"><span class="pin-text">수제화 가게</span></span></button>
+            <!-- 교회 말풍선 임시 좌표: 지도에 맞게 left/top을 수정하세요. -->
+            <button type="button" class="pin" data-place="church" style="left:58.4%;top:11%" aria-label="교회 선택"><span class="pin-label"><span class="pin-text">교회</span></span></button>
+            <!-- 도서관 신규 임시 말풍선 좌표. 추후 left/top 값을 직접 바꾸시면 됩니다. -->
+            <button type="button" class="pin" data-place="library" style="left:64%;top:45.5%" aria-label="도서관 선택"><span class="pin-label"><span class="pin-text">도서관</span></span></button>
+            <!-- v59 신규 장소: 말풍선 좌표는 임시값이며 left/top을 수정할 수 있습니다. -->
+            <button type="button" class="pin" data-place="laLaLola" style="left:75%;top:37%" aria-label="La La Lola 선택"><span class="pin-label"><span class="pin-text">La La Lola</span></span></button>
+            <button type="button" class="pin" data-place="oldHouse" style="left:22.6%;top:34.4%" aria-label="낡은 단독 주택 선택"><span class="pin-label"><span class="pin-text">낡은 단독 주택</span></span></button>
           </div>
           
           <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="장소 목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">장소 목록</span></button>
@@ -969,30 +1023,43 @@
   // 지도(map-*.png)와 사이트 로고(chatcity-logo.png)는 기존 assets/ 폴더에 둡니다.
   // ① 장소 데이터: 장소의 이름, 아이콘, 연결 NPC를 관리합니다.
   const PLACES = {
-    tarot:   { name: '타로점',   english: 'TAROT SHOP',    icon: '🔮', category: 'SHOP',    meta: '타로카드 보는 곳', npcs: ['eloise'], image: 'asset-place/tarot-shop.webp', coverPosition: 'center 58%' },
-    crown:   { name: '더 크라운', english: 'THE CROWN', icon: '👑', category: 'BUILDING', meta: '도심의 초고층 빌딩', npcs: ['vivian', 'dean', 'dabin'], image: 'asset-place/the-crown.webp', coverPosition: 'center 63%' },
-    smallpark: { name: '작은 공원', english: 'SMALL PARK', icon: '🌿', category: 'OUTSKIRTS', meta: '마을 한편에 자리한 작은 쉼터', npcs: ['chunsik'], image: 'asset-place/small-park.webp', coverPosition: 'center 65%' },
-    outskirtsCafe: { name: '카페', english: 'OUTSKIRTS CAFE', icon: '☕', category: 'CAFE', meta: '커피 향이 가득한 마을의 작은 카페', npcs: ['chunsik'], image: 'asset-place/outskirts-cafe.webp', coverPosition: 'center 52%' },
-    flowerbed: { name: '화단', english: 'APARTMENT FLOWERBED', icon: '🌷', category: 'OUTSKIRTS', meta: '아파트 단지 앞 화단', npcs: ['chunsik', 'pip', 'fifi', 'chichi'], image: 'asset-place/apartment-flowerbed.webp', coverPosition: 'center 63%' },
-    bookstore: { name: '작은 서점', english: 'SMALL BOOKSTORE', icon: '📖', category: 'BOOKSTORE', meta: '작은 서점', npcs: ['emma'], image: 'asset-place/small-bookstore.webp', coverPosition: 'center 56%' },
-    hillhouse: { name: '언덕 위 집', english: 'HILLTOP HOUSE', icon: '🏡', category: 'HILL HOUSE', meta: '언덕 위에 자리한 아늑한 집', npcs: ['jinhee'], image: 'asset-place/hill-house.png', coverPosition: 'center 60%' },
+    tarot:   { name: '타로점',   english: 'TAROT SHOP',    icon: '🔮', category: 'SHOP',    meta: '타로카드 보는 곳', npcs: ['eloise', 'rosie'], image: 'asset-place/tarot-shop.webp', coverPosition: 'center 58%' },
+    crown:   { name: '더 크라운', english: 'THE CROWN', icon: '👑', category: 'BUILDING', meta: '도심의 초고층 빌딩', npcs: ['vivian', 'dean', 'dabin', 'sidney', 'jerry', 'john', 'margo'], image: 'asset-place/the-crown.webp', coverPosition: 'center 63%' },
+    smallpark: { name: '작은 공원', english: 'SMALL PARK', icon: '🌿', category: 'OUTSKIRTS', meta: '마을 한편에 자리한 작은 쉼터', npcs: ['chunsik', 'eunsil', 'jerry', 'candy', 'tiana', 'margo', 'doolgi', 'maya', 'nutbam'], image: 'asset-place/small-park.webp', coverPosition: 'center 65%' },
+    outskirtsCafe: { name: '카페', english: 'OUTSKIRTS CAFE', icon: '☕', category: 'CAFE', meta: '커피 향이 가득한 마을의 작은 카페', npcs: ['chunsik', 'jerry', 'rosie', 'eliza', 'maya', 'raoul'], image: 'asset-place/outskirts-cafe.webp', coverPosition: 'center 52%' },
+    flowerbed: { name: '화단', english: 'APARTMENT FLOWERBED', icon: '🌷', category: 'OUTSKIRTS', meta: '아파트 단지 앞 화단', npcs: ['chunsik', 'pip', 'fifi', 'chichi', 'jerry'], image: 'asset-place/apartment-flowerbed.webp', coverPosition: 'center 63%' },
+    bookstore: { name: '작은 서점', english: 'SMALL BOOKSTORE', icon: '📖', category: 'BOOKSTORE', meta: '작은 서점', npcs: ['emma', 'jerry', 'rosie', 'eliza'], image: 'asset-place/small-bookstore.webp', coverPosition: 'center 56%' },
+    hillhouse: { name: '언덕 위 집', english: 'HILLTOP HOUSE', icon: '🏡', category: 'HILL HOUSE', meta: '언덕 위에 자리한 아늑한 집', npcs: ['jinhee', 'jerry'], image: 'asset-place/hill-house.png', coverPosition: 'center 60%' },
     detectiveOffice: { name: '탐정 사무소', english: 'DETECTIVE OFFICE', icon: '🔎', category: 'OFFICE', meta: '마을 안쪽의 낡은 탐정 사무소', npcs: ['dorian', 'watson'], image: 'asset-place/detective-office.png', coverPosition: 'center 55%' },
     repairShop: { name: '선박 수리 작업장', english: 'BOAT REPAIR', icon: '🛠️', category: 'WORKSHOP', meta: '선박 수리 작업장', npcs: ['jack'], image: 'asset-place/repair.png', coverPosition: 'center' },
-    dockBar: { name: '부두 근처 바', english: 'DOCKSIDE BAR', icon: '🍺', category: 'BAR', meta: '부두 근처 바', npcs: ['jack'], image: 'asset-place/bar.png', coverPosition: 'center' },
+    dockBar: { name: '부두 근처 바', english: 'DOCKSIDE BAR', icon: '🍺', category: 'BAR', meta: '부두 근처 바', npcs: ['jack', 'jerry', 'roy', 'baeduhan'], image: 'asset-place/bar.png', coverPosition: 'center' },
     police: { name: '파출소', english: 'POLICE STATION', icon: '🚓', category: 'POLICE', meta: '마을에 하나뿐인 파출소', npcs: ['penny'], image: 'asset-place/police.png', coverPosition: 'center' },
-    largePark: { name: '공원', english: 'PARK', icon: '🌳', category: 'PARK', meta: '푸른 잔디와 산책길이 펼쳐진 넓은 공원', npcs: ['goose', 'pip'], image: 'asset-place/largepark.png', coverPosition: 'center' },
+    largePark: { name: '공원', english: 'PARK', icon: '🌳', category: 'PARK', meta: '푸른 잔디와 산책길이 펼쳐진 넓은 공원', npcs: ['goose', 'pip', 'eunsil', 'jerry', 'tiana', 'doolgi', 'maya', 'raoul', 'nutbam'], image: 'asset-place/largepark.png', coverPosition: 'center' },
     pond: { name: '연못', english: 'POND', icon: '🦆', category: 'POND', meta: '맑은 물이 잔잔하게 흐르는 작은 연못', npcs: ['goose'], image: 'asset-place/pond.png', coverPosition: 'center' },
-    alley: { name: '골목길', english: 'ALLEYWAY', icon: '🏘️', category: 'ALLEYWAY', meta: '주의: 양아치 조심', npcs: ['goose'], image: 'asset-place/alleyway.png', coverPosition: 'center' },
-    buildingForest: { name: '빌딩숲', english: 'DOWNTOWN BUILDINGS', icon: '🏙️', category: 'CITY', meta: '고층 빌딩들이 빼곡히 들어선 도심 한복판', npcs: ['goose'], image: 'asset-place/building.png', coverPosition: 'center' },
+    alley: { name: '골목길', english: 'ALLEYWAY', icon: '🏘️', category: 'ALLEYWAY', meta: '주의: 양아치 조심', npcs: ['goose', 'eunsil', 'jerry', 'candy', 'baeduhan', 'maya', 'raoul'], image: 'asset-place/alleyway.png', coverPosition: 'center' },
+    buildingForest: { name: '빌딩숲', english: 'DOWNTOWN BUILDINGS', icon: '🏙️', category: 'CITY', meta: '고층 빌딩들이 빼곡히 들어선 도심 한복판', npcs: ['goose', 'jerry', 'raoul', 'arthur'], image: 'asset-place/building.png', coverPosition: 'center' },
     sewer: { name: '하수구', english: 'SEWER', icon: '🕳️', category: 'SEWER', meta: '하수구', npcs: ['colt'], image: 'asset-place/sewer.png', coverPosition: 'center' },
-    busStop: { name: '버스 정류장', english: 'BUS STOP', icon: '🚏', category: 'BUS STOP', meta: '도시와 마을을 잇는 버스를 타는 곳', npcs: ['nina'], image: 'asset-place/bus.png', coverPosition: 'center' },
-    penthouse: { name: '고층 펜트하우스', english: 'PENTHOUSE', icon: '🏢', category: 'PENTHOUSE', meta: '도시 스카이라인을 한눈에 볼 수 있는 펜트하우스', npcs: ['damian'], image: 'asset-place/penthouse.png', coverPosition: 'center' },
+    busStop: { name: '버스 정류장', english: 'BUS STOP', icon: '🚏', category: 'BUS STOP', meta: '도시와 마을을 잇는 버스를 타는 곳', npcs: ['nina', 'jerry'], image: 'asset-place/bus.png', coverPosition: 'center' },
+    penthouse: { name: '펜트하우스', english: 'PENTHOUSE', icon: '🏢', category: 'PENTHOUSE', meta: '도시 스카이라인을 한눈에 볼 수 있는 펜트하우스', npcs: ['damian', 'jerry', 'eliza', 'margo', 'raoul', 'arthur'], image: 'asset-place/penthouse.png', coverPosition: 'center' },
     jangseung: { name: '마을 초입', english: 'VILLAGE ENTRANCE', icon: '🪧', category: 'OUTSKIRTS', meta: '마을로 들어서는 입구', npcs: ['bobo'], image: 'asset-place/jang.png', coverPosition: 'center' },
     postbox: { name: '우체통', english: 'POSTBOX', icon: '📮', category: 'OUTSKIRTS', meta: '마을의 유일한 우체통', npcs: ['pip'], image: 'asset-place/post.png', coverPosition: 'center' },
-    detachedHouse: { name: '단독 주택', english: 'DETACHED HOUSE', icon: '🏠', category: 'OUTSKIRTS', meta: '고풍스러운 단독 주택', npcs: ['cassian'], image: 'asset-place/luxuryhouse.png', coverPosition: 'center' },
-    farmhouse: { name: '농사꾼의 집', english: 'FARMER HOUSE', icon: '🌾', category: 'OUTSKIRTS', meta: '온갖 작물을 심고 재배하는 농사꾼이 살고 있는 소박한 주택', npcs: ['homi'], image: 'asset-place/farmer.png', coverPosition: 'center' },
-    villageMarket: { name: '마을 시장', english: 'VILLAGE MARKET', icon: '🛒', category: 'OUTSKIRTS', meta: '없는게 없어요', npcs: ['homi'], image: 'asset-place/market.png', coverPosition: 'center' },
-    backMountain: { name: '마을 뒷 산', english: 'MOUNTAIN', icon: '⛰️', category: 'OUTSKIRTS', meta: '호랑이가 나오는 산', npcs: ['eunho'], image: 'asset-place/mountain.png', coverPosition: 'center' },
+    detachedHouse: { name: '단독 주택', english: 'DETACHED HOUSE', icon: '🏠', category: 'OUTSKIRTS', meta: '고풍스러운 단독 주택', npcs: ['cassian', 'jerry'], image: 'asset-place/luxuryhouse.png', coverPosition: 'center' },
+    farmhouse: { name: '농사꾼의 집', english: 'FARMER HOUSE', icon: '🌾', category: 'OUTSKIRTS', meta: '온갖 작물을 심고 재배하는 농사꾼이 살고 있는 소박한 주택', npcs: ['homi', 'jerry'], image: 'asset-place/farmer.png', coverPosition: 'center' },
+    villageMarket: { name: '마을 시장', english: 'VILLAGE MARKET', icon: '🛒', category: 'OUTSKIRTS', meta: '없는게 없어요', npcs: ['homi', 'jerry', 'maya'], image: 'asset-place/market.png', coverPosition: 'center' },
+    backMountain: { name: '마을 뒷 산', english: 'MOUNTAIN', icon: '⛰️', category: 'OUTSKIRTS', meta: '호랑이가 나오는 산', npcs: ['eunho', 'rosie', 'nutbam'], image: 'asset-place/mountain.png', coverPosition: 'center' },
+    elephantShop: { name: '코끼리도 춤을 춘다', english: 'ELEPHANT GENERAL STORE', icon: '🐘', category: 'SHOP', meta: '유리온실 종합 만물상', npcs: ['aubrey'], image: 'asset-place/glass.png', coverPosition: 'center' },
+    gym: { name: '헬스장', english: 'GYM', icon: '🏋️', category: 'OUTSKIRTS', meta: '삼대몇', npcs: ['eunsil'], image: 'asset-place/health.png', coverPosition: 'center' },
+    convenienceStore: { name: '편의점', english: 'CONVENIENCE STORE', icon: '🏪', category: 'OUTSKIRTS', meta: '24시 열어요', npcs: ['eunsil', 'baeduhan'], image: 'asset-place/store.png', coverPosition: 'center' },
+    sauna: { name: '찜질방', english: 'SAUNA', icon: '♨️', category: 'OUTSKIRTS', meta: '참나무 숯장작 삼겹살 맛집', npcs: ['eunsil'], image: 'asset-place/sauna.png', coverPosition: 'center' },
+    mentalHospital: { name: '정신병원', english: 'PSYCHIATRIC HOSPITAL', icon: '🏥', category: 'OUTSKIRTS', meta: '마음을 치유받고 가세요', npcs: ['sam', 'sasha'], image: 'asset-place/mthospital.png', coverPosition: 'center' },
+    backAlley: { name: '뒷골목', english: 'BACK ALLEY', icon: '🌑', category: 'OUTSKIRTS', meta: '비겁하다 욕하지마', npcs: ['jerry', 'roy', 'baeduhan'], image: 'asset-place/backalley.png', coverPosition: 'center' },
+    gamblingHouse: { name: '도박장', english: 'GAMBLING HOUSE', icon: '🎲', category: 'OUTSKIRTS', meta: '매우 수상한 건물', npcs: ['roy', 'john'], image: 'asset-place/gambling.png', coverPosition: 'center' },
+    farm: { name: '농장', english: 'FARM', icon: '🚜', category: 'OUTSKIRTS', meta: '가축과 과수원, 밭, 논이 있는 곳', npcs: ['anatoly'], image: 'asset-place/farm.png', coverPosition: 'center' },
+    shoeShop: { name: '수제화 가게', english: 'HANDMADE SHOES', icon: '👞', category: 'OUTSKIRTS', meta: '장인의 손으로 만들어드려요', npcs: ['elio'], image: 'asset-place/shoes.png', coverPosition: 'center' },
+    church: { name: '교회', english: 'CHURCH', icon: '⛪', category: 'OUTSKIRTS', meta: '아멘', npcs: ['john'], image: 'asset-place/church.png', coverPosition: 'center' },
+    library: { name: '도서관', english: 'LIBRARY', icon: '📚', category: 'OUTSKIRTS', meta: '도서관에서 떠들지 마세요', npcs: ['tiana'], image: 'asset-place/library.png', coverPosition: 'center' },
+    laLaLola: { name: 'La La Lola', english: 'LA LA LOLA', icon: '👗', category: 'BOUTIQUE', meta: '다양한 스타일의 의류로 빼곡한 부티크', npcs: ['lola'], image: 'asset-place/lala.png', coverPosition: 'center' },
+    oldHouse: { name: '낡은 단독 주택', english: 'OLD DETACHED HOUSE', icon: '🏚️', category: 'OUTSKIRTS', meta: '외곽의 낡은 단독 주택', npcs: ['eddie'], image: 'asset-place/house_1.png', coverPosition: 'center' },
   };
 
   // ② NPC 데이터: 새 인물을 추가할 때 이곳에 정보를 넣고 장소의 npcs 배열에 ID를 연결하세요.
@@ -1048,7 +1115,31 @@
     dean: { name: '딘 카튼', role: '빌딩 지하 시설관리인', image: 'asset-profile/dean.png', description: '2026.11.08에 공개됩니다' },
     dabin: { name: '서다빈', role: '루프탑 칵테일 바의 (자칭)팜프파탈 직원', image: 'asset-profile/dabin.png', description: '2026.11.08에 공개됩니다' },
     fifi: { name: '피피', role: '가로수 위의 작은 새(bird) 남편', image: 'asset-profile/fifi.png', description: '2026.11.08에 공개됩니다' },
-    chichi: { name: '치치', role: '가로수 위의 작은 새(bird) 아내', image: 'asset-profile/chichi.png', description: '2026.11.08에 공개됩니다' }
+    chichi: { name: '치치', role: '가로수 위의 작은 새(bird) 아내', image: 'asset-profile/chichi.png', description: '2026.11.08에 공개됩니다' },
+    sidney: { name: '시드니 그린', role: '1층 로비 프론트 데스크 직원', image: 'asset-profile/green.PNG', description: '2026.11.08에 공개됩니다' },
+    aubrey: { name: '오브리', role: '기묘한 종합만물상 매니저', image: 'asset-profile/aubrey.JPG', description: '2026.11.08에 공개됩니다' },
+    eunsil: { name: '성은실', role: '아르바이트 마스터', image: 'asset-profile/master.PNG', description: '2026.11.08에 공개됩니다' },
+    jerry: { name: '제리', role: '메트로폴리스에 슈퍼맨이 있다면 챗시티에는 슈퍼쥐가 있다!', image: 'asset-profile/jerry.PNG', description: '2026.11.08에 공개됩니다' },
+    candy: { name: '이캔디', role: '(자칭)골목 대장, 사탕 킬러', image: 'asset-profile/candy.JPG', description: '2026.11.08에 공개됩니다' },
+    sam: { name: '샘 켈러', role: '정신과 의사', image: 'asset-profile/sam.PNG', description: '2026.11.08에 공개됩니다' },
+    sasha: { name: '사샤 바네프', role: '무기력하지만 온화한 환자', image: 'asset-profile/sasha.PNG', description: '2026.11.08에 공개됩니다' },
+    roy: { name: '로이 해리스', role: '양아치 바텐더', image: 'asset-profile/roy.JPG', description: '2026.11.08에 공개됩니다' },
+    anatoly: { name: '아나톨리 스미노프', role: '농장 잡역부 / 남친 대행도 해드려요', image: 'asset-profile/ana.PNG', description: '2026.11.08에 공개됩니다' },
+    elio: { name: '엘리오 마레', role: '수제화 장인', image: 'asset-profile/ellio.PNG', description: '2026.11.08에 공개됩니다' },
+    baeduhan: { name: '배두한', role: '"너 내가 누군지 알아?"', image: 'asset-profile/bdg.JPG', description: '2026.11.08에 공개됩니다' },
+    tiana: { name: "티아나 벨", role: "잠만 자는 걔", image: "asset-profile/tia.JPG", description: '2026.11.08에 공개됩니다' },
+    rosie: { name: "로지 애버리", role: "귀신 좋아하는 카페 사장님", image: "asset-profile/TEA.PNG", description: '2026.11.08에 공개됩니다' },
+    lola: { name: "롤라 글리터", role: "극도로 외향적이고 수다스러운 부티크 사장", image: "asset-profile/lola.PNG", description: '2026.11.08에 공개됩니다' },
+    yihyun: { name: "정이현", role: "13살의 훈장님", image: "asset-profile/2h.PNG", description: '2026.11.08에 공개됩니다' },
+    john: { name: "도현성(존)", role: "그를 믿지 마세요", image: "asset-profile/K.PNG", description: '2026.11.08에 공개됩니다' },
+    eliza: { name: "일라이자 펨브룩", role: "부유한 올드머니 가문의 막대딸이자 천문학과 대학생", image: "asset-profile/lizzie.PNG", description: '2026.11.08에 공개됩니다' },
+    margo: { name: "마고 애쉬포드", role: "화려한 싱글", image: "asset-profile/ash.PNG", description: '2026.11.08에 공개됩니다' },
+    doolgi: { name: "김둘기", role: "싸움짱 비둘기", image: "asset-profile/doodoo.PNG", description: '2026.11.08에 공개됩니다' },
+    maya: { name: "마야", role: "거위들과 싸우는 무직 떠돌이", image: "asset-profile/maya.PNG", description: '2026.11.08에 공개됩니다' },
+    raoul: { name: "라울 클리어워터", role: "광신도(포교 활동에 집중)", image: "asset-profile/raoul.PNG", description: '2026.11.08에 공개됩니다' },
+    arthur: { name: "아서 보몬트", role: "은퇴한 지식인", image: "asset-profile/arthur.PNG", description: '2026.11.08에 공개됩니다' },
+    eddie: { name: "에디 밀러", role: "천운의 소유자", image: "asset-profile/eddie.PNG", description: '2026.11.08에 공개됩니다' },
+    nutbam: { name: "너트밤", role: "폭탄 테러 다람쥐", image: "asset-profile/nut.JPG", description: '2026.11.08에 공개됩니다' },
   };
 
   // ③ 장소를 선택하면 해당 장소와 NPC 목록을 표시하고, 패널은 내용 높이에 맞춥니다.
@@ -1234,7 +1325,8 @@
 
   // 전체 장소 수는 데이터에서 자동으로 계산합니다.
   function updateWorldTotals() {
-    const count = new Set(Object.values(PLACES).flatMap(place => place.npcs).filter(id => NPCS[id])).size;
+    const count = Object.keys(NPCS).length;
+    document.querySelectorAll('[data-population-count]').forEach(el => { el.textContent = count.toLocaleString('ko-KR'); });
     document.getElementById('placeCount').textContent = Object.keys(PLACES).length;
   }
   updateWorldTotals();
