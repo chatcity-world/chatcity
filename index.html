@@ -809,6 +809,83 @@
       .population-mobile { font-size:10px; }
       .mobile-download-trigger { min-width:106px; height:36px; padding-inline:6px; font-size:10px; gap:3px; }
     }
+
+    /* v83: sidebar residents shortcut and searchable resident directory modal */
+    .resident-entry { flex:none; padding:1px 0 18px; border-bottom:1px solid #eee6cf; }
+    .resident-entry-button {
+      display:flex; align-items:center; gap:10px; width:100%; min-height:51px;
+      border:1px solid #e7d9b9; border-radius:13px; background:#fff5d9;
+      color:#26110e; padding:10px 12px; text-align:left; font-size:13px;
+      font-weight:850; cursor:pointer; transition:background .15s, border-color .15s;
+    }
+    .resident-entry-button:hover { background:#f9e9bb; border-color:#dbc38c; }
+    .resident-entry-icon { display:grid; place-items:center; flex:none; width:30px; height:30px;
+      background:#fffdf6; border-radius:9px; font-size:17px; }
+    .resident-entry-button svg { margin-left:auto; flex:none; }
+    .residents-dialog {
+      width:min(540px,calc(100vw - 32px)); max-width:540px;
+      height:min(710px,calc(100dvh - 38px)); max-height:calc(100dvh - 38px);
+      margin:auto; padding:0; border:1px solid #e8dfc9; border-radius:21px;
+      background:#fffdf7; color:#26110e; box-shadow:0 25px 90px rgba(25,16,9,.29);
+      overflow:hidden;
+    }
+    .residents-dialog::backdrop { background:rgba(22,17,13,.57); }
+    .residents-modal-shell { display:flex; flex-direction:column; min-height:0; height:100%; }
+    .residents-modal-header { display:flex; justify-content:space-between; align-items:center; gap:12px;
+      padding:22px 23px 15px; flex:none; }
+    .residents-eyebrow { display:block; font-size:10px; font-weight:800; letter-spacing:.13em; color:#9b8a6c; }
+    .residents-modal-header h2 { margin:5px 0 0; font-size:22px; letter-spacing:-.035em; }
+    .residents-close { display:grid; place-items:center; width:35px; height:35px; flex:none;
+      border:1px solid #e8dfcc; border-radius:10px; background:#fff7e8; color:#26110e; cursor:pointer; }
+    .residents-search-wrap { flex:none; padding:0 23px 12px; }
+    .residents-search-label { display:block; font-size:11px; font-weight:750; color:#786b56; margin-bottom:7px; }
+    .residents-search-field { display:flex; align-items:center; gap:9px; width:100%; min-height:44px;
+      border:1px solid #ded3ba; border-radius:12px; padding:0 12px; background:#fff;
+      color:#a29580; }
+    .residents-search-field:focus-within { border-color:#947953; box-shadow:0 0 0 3px rgba(191,164,119,.16); }
+    .residents-search-field input { flex:1; width:100%; min-width:0; height:42px; outline:none; border:0;
+      background:transparent; color:#26110e; font-size:13px; }
+    .residents-search-field input::placeholder { color:#ab9f8c; }
+    .residents-search-meta { margin:9px 0 0; color:#8a7b63; font-size:11px; }
+    .residents-results { min-height:0; flex:1; overflow-y:auto; overscroll-behavior:contain;
+      padding:0 17px 18px 23px; }
+    .resident-row { border-bottom:1px solid #eee8d9; }
+    .resident-row-button { display:flex; width:100%; min-height:69px; align-items:center; gap:12px;
+      text-align:left; padding:9px 6px 9px 0; background:transparent; border:0;
+      color:#30221b; cursor:pointer; }
+    .resident-row-button:hover .resident-row-name { color:#84603e; }
+    .resident-row-avatar { width:46px; height:46px; flex:none; overflow:hidden; border-radius:50%;
+      background:#f0e5cf; border:1px solid #e7dcc5; }
+    .resident-row-avatar img { width:100%; height:100%; object-fit:cover; }
+    .resident-row-name { flex:1; min-width:0; font-size:14px; font-weight:800; word-break:keep-all; }
+    .resident-row-chevron { color:#98876b; transition:transform .16s; flex:none; }
+    .resident-row-button[aria-expanded="true"] .resident-row-chevron { transform:rotate(180deg); }
+    .resident-row-details { display:flex; align-items:start; justify-content:space-between; gap:12px;
+      padding:0 5px 15px 58px; }
+    .resident-row-details[hidden] { display:none !important; }
+    .resident-row-summary { flex:1; min-width:0; color:#6d5c47; font-size:12px; line-height:1.6;
+      margin:3px 0 0; word-break:keep-all; overflow-wrap:anywhere; }
+    .resident-row-map { flex:none; min-height:34px; border:1px solid #26110e; border-radius:9px;
+      padding:7px 10px; background:#26110e; color:#fff; font-size:11px; font-weight:800;
+      cursor:pointer; white-space:nowrap; }
+    .resident-row-map:hover { background:#4e3027; }
+    .resident-row-map:disabled { cursor:not-allowed; background:#e0d8cb; border-color:#e0d8cb; color:#8f8474; }
+    .residents-no-results { margin:15px 23px; color:#9c8d76; font-size:13px; text-align:center; }
+    .residents-no-results[hidden] { display:none; }
+    @media(max-width:760px) {
+      .sidebar .resident-entry { padding:39px 0 14px; width:100%; flex:none; border-bottom:1px solid #eee6cf; }
+      .sidebar .nav-list { margin-top:8px; }
+      .residents-dialog { width:calc(100vw - 20px); max-width:none; height:min(690px,calc(100dvh - 28px));
+        max-height:calc(100dvh - 28px); border-radius:17px; }
+      .residents-modal-header { padding:18px 17px 14px; }
+      .residents-search-wrap { padding:0 17px 10px; }
+      .residents-results { padding:0 12px 18px 17px; }
+    }
+    @media(max-width:370px) {
+      .resident-row-details { padding-left:0; }
+      .resident-row-summary { font-size:11px; }
+      .resident-row-map { font-size:10px; padding:6px 8px; }
+    }
   </style>
 </head>
 <body>
@@ -824,9 +901,12 @@
   <button type="button" class="mobile-menu-backdrop" id="mobileMenuBackdrop" aria-label="장소 메뉴 닫기" tabindex="-1"></button>
   <aside class="sidebar" id="mobileSidebar" aria-label="장소 목록">
     <button type="button" class="mobile-nav-close" id="mobileMenuClose" aria-label="장소 메뉴 닫기">✕</button>
-    <div class="brand">
-      <div class="logo-mark"><img src="assets/chatcity-logo.png" alt="CHATCITY 마을 로고"></div>
-      <div><strong class="brand-name">CHATCITY</strong><small class="brand-sub">CHATCITY WORLD</small></div>
+    <div class="resident-entry">
+      <button type="button" class="resident-entry-button" id="openResidents" aria-haspopup="dialog" aria-controls="residentsDialog">
+        <span class="resident-entry-icon" aria-hidden="true">👥</span>
+        <span>주민 전체보기</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
     </div>
 
     <!-- 도심과 외곽 마을은 접고 펼칠 수 있는 장소 폴더입니다. -->
@@ -973,7 +1053,7 @@
             <button type="button" class="pin" data-place="springGarden" style="left:26.5%;top:58.2%" aria-label="봄의 정원 선택"><span class="pin-label"><span class="pin-text">봄의 정원</span></span></button>
           </div>
           
-          <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="장소 목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">장소 목록</span></button>
+          <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">목록</span></button>
           <div class="mobile-map-hint" id="mobileMapHint" aria-hidden="true">지도를 움직여 장소를 탐색하세요</div>
           <div class="zoom-tools" aria-label="지도 확대 축소">
             <button type="button" id="zoomOut" title="축소" aria-label="지도 축소">−</button>
@@ -1033,6 +1113,25 @@
   <div class="coming-soon-mark" aria-hidden="true">✦</div>
   <h2 id="downloadDialogTitle">아직 준비중이에요</h2>
   <button type="button" class="dialog-confirm" id="downloadConfirm">확인</button>
+</dialog>
+<!-- v83: 검색 가능한 CHATCITY 전체 주민 목록. 기존 NPC 정보에서 동적으로 구성됩니다. -->
+<dialog class="residents-dialog" id="residentsDialog" aria-labelledby="residentsTitle">
+  <div class="residents-modal-shell">
+    <header class="residents-modal-header">
+      <div><span class="residents-eyebrow">CHATCITY / RESIDENTS</span><h2 id="residentsTitle">주민 전체보기</h2></div>
+      <button type="button" class="residents-close" id="closeResidents" aria-label="주민 목록 닫기">✕</button>
+    </header>
+    <div class="residents-search-wrap">
+      <label class="residents-search-label" for="residentsSearch">주민 검색</label>
+      <div class="residents-search-field">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+        <input id="residentsSearch" type="search" placeholder="이름, 소개, 상세 내용으로 검색" autocomplete="off" spellcheck="false" />
+      </div>
+      <p class="residents-search-meta" id="residentsCount" role="status" aria-live="polite"></p>
+    </div>
+    <div class="residents-results" id="residentsResults" aria-label="전체 주민 목록"></div>
+    <p class="residents-no-results" id="residentsNoResults" hidden>검색 결과가 없습니다.</p>
+  </div>
 </dialog>
 <!-- NPC 사진을 클릭하면 열리는 전체 화면 이미지 뷰어 -->
 <dialog class="photo-viewer" id="photoViewer" aria-label="사진 크게 보기">
@@ -1787,6 +1886,115 @@
   })();
 </script>
 
+
+
+<script>
+  // v83: Searchable resident directory. All records come from existing NPCS and PLACES.
+  (() => {
+    const dialog = document.getElementById('residentsDialog');
+    const openButton = document.getElementById('openResidents');
+    const closeButton = document.getElementById('closeResidents');
+    const input = document.getElementById('residentsSearch');
+    const results = document.getElementById('residentsResults');
+    const count = document.getElementById('residentsCount');
+    const empty = document.getElementById('residentsNoResults');
+    const entries = Object.entries(NPCS).sort((a, b) =>
+      a[1].name.localeCompare(b[1].name, 'ko-KR', { numeric: true, sensitivity: 'base' }));
+    const npcPlaces = new Map();
+    Object.entries(PLACES).forEach(([placeId, place]) => {
+      (place.npcs || []).forEach(npcId => {
+        if (!npcPlaces.has(npcId)) npcPlaces.set(npcId, placeId);
+      });
+    });
+    const matchIndex = new Map(entries.map(([id, npc]) => [id,
+      Object.entries(npc).filter(([key, value]) => key !== 'image' && typeof value === 'string')
+        .map(([, value]) => value.toLocaleLowerCase('ko-KR')).join(' ')]));
+    let expandedId = null;
+
+    function makeRow(id, npc, index) {
+      const row = document.createElement('div');
+      row.className = 'resident-row';
+      const head = document.createElement('button');
+      head.type = 'button';
+      head.className = 'resident-row-button';
+      head.setAttribute('aria-expanded', String(expandedId === id));
+      head.setAttribute('aria-label', npc.name + ' 소개 펼치기');
+      const avatar = document.createElement('span');
+      avatar.className = 'resident-row-avatar';
+      const img = document.createElement('img');
+      img.src = npc.image.replace('asset-profile/', 'asset-profile/thumbs/');
+      img.alt = '';
+      img.loading = index < 8 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      img.onerror = () => { img.onerror = null; img.src = npc.image; };
+      avatar.appendChild(img);
+      const name = document.createElement('span');
+      name.className = 'resident-row-name';
+      name.textContent = npc.name;
+      const chevron = document.createElement('span');
+      chevron.className = 'resident-row-chevron';
+      chevron.textContent = '⌄';
+      chevron.setAttribute('aria-hidden','true');
+      head.append(avatar, name, chevron);
+
+      const details = document.createElement('div');
+      details.className = 'resident-row-details';
+      details.hidden = expandedId !== id;
+      const summary = document.createElement('p');
+      summary.className = 'resident-row-summary';
+      summary.textContent = npc.role || '소개가 준비 중입니다.';
+      const go = document.createElement('button');
+      go.type = 'button';
+      go.className = 'resident-row-map';
+      const placeId = npcPlaces.get(id);
+      go.textContent = placeId ? '지도에서 보기' : '등장 장소 없음';
+      if (!placeId) go.disabled = true;
+      else {
+        go.title = PLACES[placeId].name + '에서 ' + npc.name + ' 보기';
+        go.addEventListener('click', () => {
+          dialog.close();
+          window.selectPlace(placeId);
+          window.showNpcProfile(id);
+          // Move map to the associated location, using the site's existing focus logic.
+          window.focusPlaceOnMap(placeId);
+          // In mobile mode the selectPlace wrapper also closes the menu and opens the detail sheet.
+        });
+      }
+      details.append(summary, go);
+      head.addEventListener('click', () => {
+        expandedId = expandedId === id ? null : id;
+        results.querySelectorAll('.resident-row-button').forEach(button => {
+          const active = button === head && expandedId === id;
+          button.setAttribute('aria-expanded', String(active));
+          button.nextElementSibling.hidden = !active;
+        });
+      });
+      row.append(head, details);
+      return row;
+    }
+
+    function render() {
+      const tokens = input.value.toLocaleLowerCase('ko-KR').trim().split(/\s+/).filter(Boolean);
+      const filtered = entries.filter(([id]) => tokens.every(token => matchIndex.get(id).includes(token)));
+      count.textContent = tokens.length ? `검색 결과 ${filtered.length}명 · 전체 ${entries.length}명` : `전체 ${entries.length}명 · 이름 가나다순`;
+      empty.hidden = filtered.length > 0;
+      results.replaceChildren(...filtered.map(([id, npc], index) => makeRow(id, npc, index)));
+    }
+    input.addEventListener('input', () => { expandedId = null; render(); });
+    openButton.addEventListener('click', () => {
+      if (!dialog.open) {
+        input.value = '';
+        expandedId = null;
+        render();
+        dialog.showModal();
+        input.focus();
+      }
+    });
+    closeButton.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    render();
+  })();
+</script>
 
 </body>
 </html>
