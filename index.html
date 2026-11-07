@@ -829,7 +829,7 @@
       background:#fffdf7; color:#26110e; box-shadow:0 25px 90px rgba(25,16,9,.29);
       overflow:hidden;
     }
-    .residents-dialog::backdrop { background:rgba(22,17,13,.57); }
+    .residents-dialog::backdrop { background:rgba(22,17,13,.60); backdrop-filter:none; -webkit-backdrop-filter:none; }
     .residents-modal-shell { display:flex; flex-direction:column; min-height:0; height:100%; }
     .residents-modal-header { display:flex; justify-content:space-between; align-items:center; gap:12px;
       padding:22px 23px 15px; flex:none; }
@@ -842,9 +842,9 @@
     .residents-search-field { display:flex; align-items:center; gap:9px; width:100%; min-height:44px;
       border:1px solid #ded3ba; border-radius:12px; padding:0 12px; background:#fff;
       color:#a29580; }
-    .residents-search-field:focus-within { border-color:#947953; box-shadow:0 0 0 3px rgba(191,164,119,.16); }
+    .residents-search-field:focus-within { border-color:#c9bca5; box-shadow:none; }
     .residents-search-field input { flex:1; width:100%; min-width:0; height:42px; outline:none; border:0;
-      background:transparent; color:#26110e; font-size:13px; }
+      background:transparent; color:#26110e; font-size:16px; -webkit-text-size-adjust:100%; }
     .residents-search-field input::placeholder { color:#ab9f8c; }
     .residents-search-meta { margin:9px 0 0; color:#8a7b63; font-size:11px; }
     .residents-results { min-height:0; flex:1; overflow-y:auto; overscroll-behavior:contain;
@@ -1998,11 +1998,15 @@
     input.addEventListener('input', () => { expandedId = null; render(); });
     openButton.addEventListener('click', () => {
       if (!dialog.open) {
+        // Close the mobile drawer first: its separate backdrop causes uneven dimming.
+        if (document.body.classList.contains('mobile-menu-visible')) {
+          document.getElementById('mobileMenuClose').click();
+        }
         input.value = '';
         expandedId = null;
         render();
         dialog.showModal();
-        input.focus();
+        // Don't auto-focus: iOS would open the keyboard and zoom the entire viewport.
       }
     });
     closeButton.addEventListener('click', () => dialog.close());
