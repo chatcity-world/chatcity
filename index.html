@@ -427,7 +427,7 @@
        Mobile: sticky top brand, full-screen pan/zoom map, slide-up details,
        off-canvas location directory. */
     .mobile-topbar, .mobile-menu-backdrop, .mobile-nav-close,
-    .mobile-browse-btn, .mobile-map-hint, .mobile-sheet-head,
+    .mobile-browse-btn, .mobile-sheet-head,
     .mobile-sheet-close, .mobile-sheet-backdrop { display: none; }
     .mobile-sheet-content { display: contents; }
 
@@ -509,14 +509,6 @@
         box-shadow:0 3px 12px rgba(70,54,27,.10);
       }
       .mobile-browse-btn span { font-size:19px; line-height:1; }
-      .mobile-map-hint {
-        display:block; position:absolute; bottom:13px; left:50%; transform:translateX(-50%);
-        max-width:calc(100% - 24px); width:max-content; z-index:26;
-        padding:9px 14px; border:1px solid #f2e7cb; border-radius:99px;
-        background:#fffef4ee; color:#766b50; box-shadow:0 5px 18px #48301b15;
-        font-size:11px; text-align:center; pointer-events:none;
-      }
-      body.mobile-sheet-open .mobile-map-hint { display:none; }
 
       /* v21: the sheet has one continuous scroll container. The NPC directory
          follows the entire description naturally; nothing is sticky. */
@@ -850,8 +842,9 @@
     .residents-results { min-height:0; flex:1; overflow-y:auto; overscroll-behavior:contain;
       padding:0 17px 18px 23px; }
     .resident-row { border-bottom:1px solid #eee8d9; }
-    .resident-row-button { display:flex; width:100%; min-height:69px; align-items:center; gap:12px;
-      text-align:left; padding:9px 6px 9px 0; background:transparent; border:0;
+    /* v92: identical 72px name row in both states, leaving 13px around 46px avatars. */
+    .resident-row-button { display:flex; width:100%; min-height:72px; align-items:center; gap:12px;
+      text-align:left; padding:13px 6px 13px 0; background:transparent; border:0;
       color:#30221b; cursor:pointer; }
     .resident-row-button:hover .resident-row-name { color:#84603e; }
     .resident-row-avatar { width:46px; height:46px; flex:none; overflow:hidden; border-radius:50%;
@@ -860,16 +853,32 @@
     .resident-row-name { flex:1; min-width:0; font-size:14px; font-weight:800; word-break:keep-all; }
     .resident-row-chevron { color:#98876b; transition:transform .16s; flex:none; }
     .resident-row-button[aria-expanded="true"] .resident-row-chevron { transform:rotate(180deg); }
-    .resident-row-details { display:flex; align-items:start; justify-content:space-between; gap:12px;
-      padding:0 5px 15px 58px; }
-    .resident-row-details[hidden] { display:none !important; }
-    .resident-row-summary { flex:1; min-width:0; color:#6d5c47; font-size:12px; line-height:1.6;
-      margin:3px 0 0; word-break:keep-all; overflow-wrap:anywhere; }
-    .resident-row-map { flex:none; min-height:34px; border:1px solid #26110e; border-radius:9px;
-      padding:7px 10px; background:#26110e; color:#fff; font-size:11px; font-weight:800;
-      cursor:pointer; white-space:nowrap; }
-    .resident-row-map:hover { background:#4e3027; }
-    .resident-row-map:disabled { cursor:not-allowed; background:#e0d8cb; border-color:#e0d8cb; color:#8f8474; }
+    /* Real downward accordion: closed rows occupy zero details height; expanded details
+       appear immediately beneath the name without shifting the avatar upward. */
+    .resident-row-details { display:grid; grid-template-rows:0fr; margin-top:0;
+      transition:grid-template-rows .22s ease, margin-top .22s ease; }
+    .resident-row-button[aria-expanded="true"] + .resident-row-details {
+      grid-template-rows:1fr; margin-top:-16px;
+    }
+    .resident-row-details-inner { min-height:0; overflow:hidden; }
+    .resident-row-details-content { display:flex; flex-direction:column; align-items:stretch;
+      gap:16px; padding:0 5px 13px 58px; }
+    @media (prefers-reduced-motion: reduce) {
+      .resident-row-details { transition:none; }
+    }
+    .resident-row-summary { min-width:0; color:#6d5c47; font-size:12px; line-height:1.6;
+      margin:0; word-break:keep-all; overflow-wrap:anywhere; }
+    .resident-row-place-list { display:flex; flex-wrap:wrap; gap:6px; width:100%; min-width:0; }
+    .resident-row-map { display:inline-flex; align-items:center; justify-content:center; gap:5px;
+      max-width:100%; min-height:33px; border:1px solid #e6dcc9; border-radius:8px;
+      padding:6px 9px; background:#fff8eb; color:#26110e; font-size:11px; font-weight:800;
+      line-height:1.25; cursor:pointer; white-space:normal; text-align:left; overflow-wrap:anywhere; }
+    .resident-row-map .place-label { display:inline-flex; align-items:center; min-width:0; line-height:1.25; }
+    .resident-row-map .place-arrow { display:inline-flex; align-items:center; justify-content:center;
+      flex:none; width:14px; height:14px; line-height:0; }
+    .resident-row-map .place-arrow svg { display:block; width:14px; height:14px; }
+    .resident-row-map:hover { background:#f8eaca; border-color:#dbc38c; }
+    .resident-row-no-place { color:#968672; font-size:11px; line-height:1.6; }
     .residents-no-results { margin:15px 23px; color:#9c8d76; font-size:13px; text-align:center; }
     .residents-no-results[hidden] { display:none; }
     @media(max-width:760px) {
@@ -882,7 +891,7 @@
       .residents-results { padding:0 12px 18px 17px; }
     }
     @media(max-width:370px) {
-      .resident-row-details { padding-left:0; }
+      .resident-row-details-content { padding-left:58px; }
       .resident-row-summary { font-size:11px; }
       .resident-row-map { font-size:10px; padding:6px 8px; }
     }
@@ -1069,7 +1078,6 @@
           </div>
           
           <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">목록</span></button>
-          <div class="mobile-map-hint" id="mobileMapHint" aria-hidden="true">지도를 움직여 장소를 탐색하세요</div>
           <div class="zoom-tools" aria-label="지도 확대 축소">
             <button type="button" id="zoomOut" title="축소" aria-label="지도 축소">−</button>
             <output id="zoomValue" aria-live="off">100%</output>
@@ -1181,7 +1189,7 @@
     sewer: { name: '하수구', english: 'SEWER', icon: '🕳️', category: 'SEWER', meta: '하수구', npcs: ['colt', 'yihyun', 'ted'], image: 'asset-place/sewer.webp', coverPosition: 'center' },
     busStop: { name: '버스 정류장', english: 'BUS STOP', icon: '🚏', category: 'BUS STOP', meta: '도시와 마을을 잇는 버스를 타는 곳', npcs: ['nina', 'jerry'], image: 'asset-place/bus.webp', coverPosition: 'center' },
     penthouse: { name: '펜트하우스', english: 'PENTHOUSE', icon: '🏢', category: 'PENTHOUSE', meta: '도시 스카이라인을 한눈에 볼 수 있는 펜트하우스', npcs: ['damian', 'vivian', 'jerry', 'eliza', 'margo', 'raoul', 'arthur'], image: 'asset-place/penthouse.webp', coverPosition: 'center' },
-    jangseung: { name: '마을 초입', english: 'VILLAGE ENTRANCE', icon: '🪧', category: 'OUTSKIRTS', meta: '마을로 들어서는 입구', npcs: ['bobo'], image: 'asset-place/jang.webp', coverPosition: 'center' },
+    jangseung: { name: '마을 초입', english: 'VILLAGE ENTRANCE', icon: '🪧', category: 'OUTSKIRTS', meta: '마을로 들어서는 입구', npcs: ['bobo', 'eloise'], image: 'asset-place/jang.webp', coverPosition: 'center' },
     postbox: { name: '우체통', english: 'POSTBOX', icon: '📮', category: 'OUTSKIRTS', meta: '마을의 유일한 우체통', npcs: ['pip'], image: 'asset-place/post.webp', coverPosition: 'center' },
     detachedHouse: { name: '단독 주택', english: 'DETACHED HOUSE', icon: '🏠', category: 'OUTSKIRTS', meta: '고풍스러운 단독 주택', npcs: ['cassian', 'jerry'], image: 'asset-place/luxuryhouse.webp', coverPosition: 'center' },
     farmhouse: { name: '농사꾼의 집', english: 'FARMER HOUSE', icon: '🌾', category: 'OUTSKIRTS', meta: '온갖 작물을 심고 재배하는 농사꾼이 살고 있는 소박한 주택', npcs: ['homi', 'jerry'], image: 'asset-place/farmer.webp', coverPosition: 'center' },
@@ -1200,7 +1208,7 @@
     library: { name: '도서관', english: 'LIBRARY', icon: '📚', category: 'OUTSKIRTS', meta: '도서관에서 떠들지 마세요', npcs: ['tiana', 'jinhee'], image: 'asset-place/library.webp', coverPosition: 'center' },
     laLaLola: { name: 'La La Lola', english: 'LA LA LOLA', icon: '👗', category: 'BOUTIQUE', meta: '다양한 스타일의 의류로 빼곡한 부티크', npcs: ['lola'], image: 'asset-place/lala.webp', coverPosition: 'center' },
     oldHouse: { name: '낡은 단독 주택', english: 'OLD DETACHED HOUSE', icon: '🏚️', category: 'OUTSKIRTS', meta: '외곽의 낡은 단독 주택', npcs: ['eddie', 'jerry'], image: 'asset-place/house_1.webp', coverPosition: 'center' },
-    houseBoat: { name: '하우스 보트', english: 'HOUSEBOAT', icon: '🛥️', category: 'OUTSKIRTS', meta: '바다 위 하우스 보트', npcs: ['gael'], image: 'asset-place/huisboot.webp', coverPosition: 'center' },
+    houseBoat: { name: '하우스 보트', english: 'HOUSEBOAT', icon: '🛥️', category: 'OUTSKIRTS', meta: '호수 위 하우스 보트', npcs: ['gael'], image: 'asset-place/huisboot.webp', coverPosition: 'center' },
     magicPharmacy: { name: '마법 약방', english: 'MAGIC APOTHECARY', icon: '🧪', category: 'OUTSKIRTS', meta: '유리 온실이 딸린 마법 약방', npcs: ['bluebell'], image: 'asset-place/magicph.webp', coverPosition: 'center' },
     luckyDraw: { name: '럭키 드로우', english: 'LUCKY DRAW', icon: '🎟️', category: 'OUTSKIRTS', meta: '마을의 작은 복권 가게', npcs: ['baeduhan', 'eunsil', 'roy', 'anatoly', 'gwinam', 'ted'], image: 'asset-place/luck.webp', coverPosition: 'center' },
     landryRealty: { name: '부동산', english: 'LANDRY REALTY', icon: '🏘️', category: 'OUTSKIRTS', meta: '시장과 탐정 사무소 사이에 있는 랜드리 부동산', npcs: ['bella'], image: 'asset-place/landry.webp', coverPosition: 'center' },
@@ -1286,7 +1294,7 @@
     arthur: { name: "아서 보몬트", role: "은퇴한 지식인", image: "asset-profile/arthur.webp", description: '2026.11.08에 공개됩니다' },
     eddie: { name: "에디 밀러", role: "천운의 소유자", image: "asset-profile/eddie.webp", description: '2026.11.08에 공개됩니다' },
     nutbam: { name: "너트밤", role: "폭탄 테러 다람쥐", image: "asset-profile/nut.webp", description: '2026.11.08에 공개됩니다' },
-    gael: { name: '가엘 모이세스', role: '꿀보이스 청년', image: 'asset-profile/gael.webp', description: '2026.11.08에 공개됩니다' },
+    gael: { name: '가엘 모이세스', role: '꿀보이스', image: 'asset-profile/gael.webp', description: '2026.11.08에 공개됩니다' },
     bluebell: { name: '블루벨 발렌타인', role: '금발머리 마녀', image: 'asset-profile/blue.webp', description: '2026.11.08에 공개됩니다' },
     bella: { name: '벨라 랜드리', role: '마을 외곽을 챗시티의 제2의 번화가로 만들겠어요.', image: 'asset-profile/bella.webp', description: '2026.11.08에 공개됩니다' },
     byeolhui: { name: '차별희', role: '남혐이 가득한 꽃집', image: 'asset-profile/flower.webp', description: '2026.11.08에 공개됩니다' },
@@ -1915,10 +1923,12 @@
     const empty = document.getElementById('residentsNoResults');
     const entries = Object.entries(NPCS).sort((a, b) =>
       a[1].name.localeCompare(b[1].name, 'ko-KR', { numeric: true, sensitivity: 'base' }));
+    // Residents may appear at multiple locations; retain every unique mapped location.
     const npcPlaces = new Map();
     Object.entries(PLACES).forEach(([placeId, place]) => {
       (place.npcs || []).forEach(npcId => {
-        if (!npcPlaces.has(npcId)) npcPlaces.set(npcId, placeId);
+        if (!npcPlaces.has(npcId)) npcPlaces.set(npcId, new Set());
+        npcPlaces.get(npcId).add(placeId);
       });
     });
     const matchIndex = new Map(entries.map(([id, npc]) => [id,
@@ -1954,34 +1964,61 @@
 
       const details = document.createElement('div');
       details.className = 'resident-row-details';
-      details.hidden = expandedId !== id;
+      details.id = 'resident-details-' + id;
+      head.setAttribute('aria-controls', details.id);
+      details.setAttribute('aria-hidden', String(expandedId !== id));
+      details.inert = expandedId !== id;
       const summary = document.createElement('p');
       summary.className = 'resident-row-summary';
       summary.textContent = npc.role || '소개가 준비 중입니다.';
-      const go = document.createElement('button');
-      go.type = 'button';
-      go.className = 'resident-row-map';
-      const placeId = npcPlaces.get(id);
-      go.textContent = placeId ? '지도에서 보기' : '등장 장소 없음';
-      if (!placeId) go.disabled = true;
-      else {
-        go.title = PLACES[placeId].name + '에서 ' + npc.name + ' 보기';
+      const places = document.createElement('div');
+      places.className = 'resident-row-place-list';
+      places.setAttribute('aria-label', npc.name + ' 등장 장소');
+      const placeIds = [...(npcPlaces.get(id) || [])].sort((a, b) =>
+        PLACES[a].name.localeCompare(PLACES[b].name, 'ko-KR', { numeric:true, sensitivity:'base' }));
+      if (!placeIds.length) {
+        const none = document.createElement('span');
+        none.className = 'resident-row-no-place';
+        none.textContent = '등록된 장소 없음';
+        places.appendChild(none);
+      }
+      placeIds.forEach(placeId => {
+        const go = document.createElement('button');
+        go.type = 'button';
+        go.className = 'resident-row-map';
+        const placeName = document.createElement('span');
+        placeName.className = 'place-label';
+        placeName.textContent = PLACES[placeId].name;
+        const arrow = document.createElement('span');
+        arrow.className = 'place-arrow';
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+        go.append(placeName, arrow);
+        go.setAttribute('aria-label', PLACES[placeId].name + ' 장소 상세 보기');
         go.addEventListener('click', () => {
           dialog.close();
+          // selectPlace returns to the place detail and opens the mobile sheet when needed.
           window.selectPlace(placeId);
-          window.showNpcProfile(id);
-          // Move map to the associated location, using the site's existing focus logic.
+          // Focus the map on the selected location without opening an NPC profile.
           window.focusPlaceOnMap(placeId);
-          // In mobile mode the selectPlace wrapper also closes the menu and opens the detail sheet.
         });
-      }
-      details.append(summary, go);
+        places.appendChild(go);
+      });
+      const detailsInner = document.createElement('div');
+      detailsInner.className = 'resident-row-details-inner';
+      const detailsContent = document.createElement('div');
+      detailsContent.className = 'resident-row-details-content';
+      detailsContent.append(summary, places);
+      detailsInner.append(detailsContent);
+      details.append(detailsInner);
       head.addEventListener('click', () => {
         expandedId = expandedId === id ? null : id;
         results.querySelectorAll('.resident-row-button').forEach(button => {
           const active = button === head && expandedId === id;
           button.setAttribute('aria-expanded', String(active));
-          button.nextElementSibling.hidden = !active;
+          const panel = button.nextElementSibling;
+          panel.setAttribute('aria-hidden', String(!active));
+          panel.inert = !active;
         });
       });
       row.append(head, details);
