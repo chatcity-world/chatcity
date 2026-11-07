@@ -990,7 +990,7 @@
           <span class="cover-tag" id="placeCategory">PLACE FILE</span>
           <div class="detail-photo-placeholder" id="placeCoverPlaceholder"><span class="big-icon" id="coverIcon" aria-hidden="true">🏡</span><span id="coverHint">장소 이미지 준비 중</span></div>
           <img class="place-cover-image" id="placeCoverImage" alt="" role="button" tabindex="-1" aria-label="장소 사진 크게 보기" title="장소 사진 크게 보기" hidden>
-          <button type="button" class="npc-cover-photo" id="npcCoverPhoto" aria-label="NPC 사진 크게 보기" title="사진 크게 보기" hidden><img id="npcCoverImg" src="asset-profile/eloise.webp" alt=""></button>
+          <button type="button" class="npc-cover-photo" id="npcCoverPhoto" aria-label="NPC 사진 크게 보기" title="사진 크게 보기" hidden><img id="npcCoverImg" alt="" decoding="async"></button>
           <button type="button" class="npc-back" id="npcBack" aria-label="장소 정보로 돌아가기" title="장소 정보로 돌아가기" hidden>
             <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
           </button>
@@ -1033,7 +1033,7 @@
 <!-- NPC 사진을 클릭하면 열리는 전체 화면 이미지 뷰어 -->
 <dialog class="photo-viewer" id="photoViewer" aria-label="사진 크게 보기">
   <button type="button" class="photo-close" id="photoClose" aria-label="사진 닫기">✕</button>
-  <figure><img id="photoLarge" src="asset-profile/eloise.webp" alt="엘로이즈의 확대 사진"><figcaption id="photoCaption">엘로이즈</figcaption></figure>
+  <figure><img id="photoLarge" alt="" decoding="async"><figcaption id="photoCaption">엘로이즈</figcaption></figure>
 </dialog>
 <script>
   // 이미지 폴더: 장소 사진은 asset-place/, NPC 사진은 asset-profile/.
@@ -1174,6 +1174,38 @@
     gwinam: { name: '고귀남', role: '정치 유튜브 애청자', image: 'asset-profile/oldman.PNG', description: '2026.11.08에 공개됩니다' },
   };
 
+  // v77: 장소에 마우스를 잠깐 올리거나 키보드로 선택하면 대표 이미지를 미리 받아둡니다.
+  // 전체 45개 장소를 한꺼번에 내려받지 않고, 최근 미리보기 4장만 유지합니다.
+  const warmPlaceCache = new Map();
+  function warmPlaceImage(placeId) {
+    const url = PLACES[placeId]?.image;
+    if (!url) return;
+    if (warmPlaceCache.has(url)) {
+      const cached = warmPlaceCache.get(url);
+      warmPlaceCache.delete(url);
+      warmPlaceCache.set(url, cached);
+      return;
+    }
+    const preview = new Image();
+    preview.decoding = 'async';
+    preview.fetchPriority = 'low';
+    preview.src = url;
+    warmPlaceCache.set(url, preview);
+    if (warmPlaceCache.size > 4) warmPlaceCache.delete(warmPlaceCache.keys().next().value);
+  }
+  document.querySelectorAll('.nav-item[data-place], .pin[data-place]').forEach(button => {
+    let hoverTimer = 0;
+    button.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      hoverTimer = window.setTimeout(() => warmPlaceImage(button.dataset.place), 140);
+    });
+    button.addEventListener('pointerleave', () => window.clearTimeout(hoverTimer));
+    button.addEventListener('focus', () => warmPlaceImage(button.dataset.place));
+    button.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'touch') warmPlaceImage(button.dataset.place);
+    });
+  });
+
   // ③ 장소를 선택하면 해당 장소와 NPC 목록을 표시하고, 패널은 내용 높이에 맞춥니다.
   let selectedPlaceId = null;
   let selectedNpcId = null;
@@ -1218,6 +1250,9 @@
     document.getElementById('placeName').textContent = place.name;
     document.getElementById('placeIcon').textContent = place.icon;
     document.getElementById('coverIcon').textContent = place.icon;
+    placeCoverImage.loading = 'eager';
+    placeCoverImage.decoding = 'async';
+    placeCoverImage.fetchPriority = 'high';
     placeCoverImage.src = place.image || '';
     placeCoverImage.alt = `${place.name} 장소 사진`;
     placeCoverImage.style.objectPosition = place.coverPosition || 'center';
@@ -1233,14 +1268,28 @@
     selectedNpcId = null;
     placeInfo.hidden = false;
     npcInfo.hidden = true;
-    placeCoverImage.hidden = !selectedPlaceId || !PLACES[selectedPlaceId].image;
-    placeCoverPlaceholder.hidden = !placeCoverImage.hidden;
+    updatePlaceCoverState();
     coverTag.hidden = false;
     npcCoverPhoto.hidden = true;
     npcBack.hidden = true;
     document.querySelectorAll('.npc-card').forEach(button => button.setAttribute('aria-pressed', 'false'));
     detailScroll.scrollTop = 0;
   }
+
+  // 장소 사진이 늦게 도착하면 빈 화면 대신 로딩 상태를 보여줍니다.
+  // NPC 화면에서는 기존 장소 커버를 숨긴 채로 유지합니다.
+  function updatePlaceCoverState() {
+    if (selectedNpcId) return;
+    const hasPhoto = Boolean(selectedPlaceId && PLACES[selectedPlaceId]?.image);
+    const loaded = hasPhoto && placeCoverImage.complete && placeCoverImage.naturalWidth > 0;
+    placeCoverImage.hidden = !loaded;
+    placeCoverPlaceholder.hidden = Boolean(loaded);
+    document.getElementById('coverHint').textContent = !hasPhoto
+      ? '장소 이미지 준비 중'
+      : loaded ? '' : placeCoverImage.complete ? '이미지를 불러올 수 없습니다' : '이미지 불러오는 중…';
+  }
+  placeCoverImage.addEventListener('load', updatePlaceCoverState);
+  placeCoverImage.addEventListener('error', updatePlaceCoverState);
 
   function renderNpcList(ids) {
     const list = document.getElementById('npcList');
@@ -1250,7 +1299,7 @@
     document.getElementById('npcCount').textContent = `${validIds.length} ${validIds.length === 1 ? 'CHARACTER' : 'CHARACTERS'}`;
     document.getElementById('npcEmpty').hidden = validIds.length > 0;
     document.getElementById('npcSubtitle').hidden = validIds.length === 0;
-    validIds.forEach(id => {
+    validIds.forEach((id, index) => {
       const npc = NPCS[id];
       const item = document.createElement('div');
       item.className = 'npc-item';
@@ -1263,9 +1312,11 @@
       const avatar = document.createElement('span');
       avatar.className = 'npc-avatar';
       const img = document.createElement('img');
-      img.src = npc.image;
       img.alt = '';
-      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.loading = index < 4 ? 'eager' : 'lazy';
+      img.fetchPriority = index < 4 ? 'auto' : 'low';
+      img.src = npc.image;
       avatar.appendChild(img);
       const name = document.createElement('span');
       name.className = 'npc-card-name';
@@ -1289,6 +1340,9 @@
     coverTag.hidden = true;
     npcCoverPhoto.hidden = false;
     npcBack.hidden = false;
+    npcCoverImg.loading = 'eager';
+    npcCoverImg.decoding = 'async';
+    npcCoverImg.fetchPriority = 'high';
     npcCoverImg.src = npc.image;
     npcCoverImg.alt = npc.name + ' 프로필 사진';
     npcCoverPhoto.setAttribute('aria-label', npc.name + ' 사진 크게 보기');
