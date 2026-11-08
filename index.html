@@ -920,6 +920,12 @@
       text-decoration: none !important;
       text-decoration-line: none !important;
     }
+
+    /* 장소 소개: NPC의 인물 소개와 동일한 왼쪽 정렬 및 일반 본문 굵기 */
+    .place-intro { margin-top: 19px; padding-top: 18px; border-top: 1px solid #eee9da; }
+    .place-intro[hidden] { display: none !important; }
+    .place-intro .npc-section-title { margin: 0 0 12px; text-align: left; }
+    .place-intro .npc-section-text { margin: 0; color: #5b5648; font-size: 12px; font-weight: 400; line-height: 1.9; letter-spacing: normal; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
   </style>
 </head>
 <body>
@@ -1149,6 +1155,10 @@
             <div class="place-info" id="placeInfo">
               <div class="detail-heading"><div><div class="detail-kicker" id="placeEnglish">CHATCITY / LOCATIONS</div><h2 class="detail-title" id="placeName">장소를 선택해 주세요</h2></div><span class="detail-heading-icon" id="placeIcon" aria-hidden="true">✦</span></div>
               <div class="meta"><span aria-hidden="true">⌖</span><span id="placeMeta">상세 설정 준비 중</span></div>
+              <section class="place-intro" id="placeIntro" aria-labelledby="placeIntroTitle" hidden>
+                <h3 class="npc-section-title" id="placeIntroTitle">장소 소개</h3>
+                <p class="npc-section-text" id="placeIntroText"></p>
+              </section>
             </div>
             <div class="npc-info" id="npcInfo" hidden>
               <div class="detail-kicker">CHATCITY / NPC</div>
@@ -1218,7 +1228,7 @@
     largePark: { name: '공원', english: 'PARK', icon: '🌳', category: 'PARK', meta: '푸른 잔디와 산책길이 펼쳐진 넓은 공원', npcs: ['goose', 'pip', 'eunsil', 'jerry', 'tiana', 'doolgi', 'maya', 'raoul', 'nutbam', 'yihyun', 'jinhee', 'elio', 'oliver', 'ted', 'sable', 'valen', 'sapsap', 'uisimi'], image: 'asset-place/largepark.webp', coverPosition: 'center' },
     pond: { name: '공원 연못', english: 'PARK POND', icon: '🦆', category: 'POND', meta: '맑은 물이 잔잔하게 흐르는 작은 연못', npcs: ['goose', 'yihyun', 'ted', 'sable', 'jerry', 'nutbam', 'valen', 'sapsap'], image: 'asset-place/pond.webp', coverPosition: 'center' },
     alley: { name: '골목길', english: 'ALLEYWAY', icon: '🏘️', category: 'ALLEYWAY', meta: '주의: 양아치 조심', npcs: ['goose', 'eunsil', 'jerry', 'candy', 'baeduhan', 'maya', 'raoul', 'oliver', 'ted', 'sable', 'sapsap', 'uisimi'], image: 'asset-place/alleyway.webp', coverPosition: 'center' },
-    boardNotice: { name: '게시판', english: 'COMMUNITY NOTICE BOARD', icon: '📌', category: 'OUTSKIRTS', meta: '마을과 도심을 아우르는 종합 정보 게시판', npcs: ['sable', 'aubrey', 'nutbam', 'sunbi', 'sapsap'], image: 'asset-place/board.webp', coverPosition: 'center' },
+    boardNotice: { name: '게시판', english: 'COMMUNITY NOTICE BOARD', icon: '📌', category: 'OUTSKIRTS', meta: '마을과 도심을 아우르는 종합 정보 게시판', npcs: ['sable', 'aubrey', 'nutbam', 'sunbi', 'sapsap'], image: 'asset-place/board.webp', coverPosition: 'center' , description: '마을 공공장소에 설치된 거대하고 견고한 종합 정보 게시판. 사다리가 필요할 만큼 높고 넓으며, 마을과 도심의 각종 정보를 제공한다. 부동산 매물, 구인구직, 무료 나눔, 광고 등 일상적인 정보부터 나폴리탄 괴담과 정체불명의 암호문까지 온갖 게시물이 올라온다. 게시판 관리와 새 게시물 부착은 아르바이트생들의 주요 업무 중 하나이며, 모든 작업은 반드시 2인 1조로 진행해야 한다.'},
     gumdo: { name: '검도장', english: 'KUMDO DOJANG', icon: '🥋', category: 'OUTSKIRTS', meta: '얍 얍', npcs: ['yihyun', 'hajun', 'ted', 'beak', 'sunbi', 'sapsap'], image: 'asset-place/gumdo.webp', coverPosition: 'center' },
     buildingForest: { name: '빌딩숲', english: 'DOWNTOWN BUILDINGS', icon: '🏙️', category: 'CITY', meta: '고층 빌딩들이 빼곡히 들어선 도심 한복판', npcs: ['goose', 'jerry', 'raoul', 'arthur', 'cassian', 'sapsap'], image: 'asset-place/building.webp', coverPosition: 'center' },
     sewer: { name: '하수구', english: 'SEWER', icon: '🕳️', category: 'SEWER', meta: '하수구', npcs: ['colt', 'yihyun', 'ted', 'eddie', 'sapsap'], image: 'asset-place/sewer.webp', coverPosition: 'center' },
@@ -1257,7 +1267,7 @@
     privateVilla: { name: '개인 별장', english: 'PRIVATE BEACH VILLA', icon: '🏖️', category: 'OUTSKIRTS', meta: '누군가의 고급스러운 개인 해변 별장', npcs: ['valen', 'jerry', 'sapsap'], image: 'asset-place/villa.webp', coverPosition: 'center' },
     privatePier: { name: '개인 선착장', english: 'PRIVATE PIER', icon: '🛥️', category: 'OUTSKIRTS', meta: '누군가의 고급 요트가 있는 선착장', npcs: ['valen', 'jerry', 'sapsap'], image: 'asset-place/pier.webp', coverPosition: 'center' },
     cityHospital: { name: '병원', english: 'DOWNTOWN HOSPITAL', icon: '🏥', category: 'HOSPITAL', meta: '챗시티 도심 병원', npcs: ['eden', 'sapsap'], image: 'asset-place/hospital_2.webp', coverPosition: 'center' },
-    cityHall: { name: '시청', english: 'CITY HALL', icon: '🏛️', category: 'CIVIC BUILDING', meta: '공무원 480명이 근무, 온갖 민원에 시달리는 곳', npcs: ['jerry', 'sapsap', 'gwinam', 'ted'], image: 'asset-place/cityhall.webp', coverPosition: 'center' },
+    cityHall: { name: '시청', english: 'CITY HALL', icon: '🏛️', category: 'CIVIC BUILDING', meta: '공무원 480명이 근무, 온갖 민원에 시달리는 곳', npcs: ['jerry', 'sapsap', 'gwinam', 'ted'], image: 'asset-place/cityhall.webp', coverPosition: 'center' , description: '폐교한 대학교 부지를 매입해 사용 중인 챗시티 시청. 총 480명의 공무원이 근무하며, 온갖 민원에 시달리고 있다. 심지어 파출소에서 처리해야 할 민원까지 접수되는 탓에 업무가 과중되어 직원들 사이에 긴장감이 감돌고 내부 분위기가 심상치 않다.'},
     bakery: { name: '빵집', english: 'BAKERY', icon: '🥐', category: 'SHOP', meta: '빵집', npcs: ['jiho', 'jerry', 'sunbi', 'sapsap'], image: 'asset-place/bakery.webp', coverPosition: 'center' },
   };
 
@@ -1452,6 +1462,9 @@
     placeCoverImage.style.objectPosition = place.coverPosition || 'center';
     placeCoverImage.tabIndex = 0;
     document.getElementById('placeMeta').textContent = place.meta;
+    const placeIntro = document.getElementById('placeIntro');
+    placeIntro.hidden = !place.description;
+    document.getElementById('placeIntroText').textContent = place.description || '';
     renderNpcList(place.npcs);
     backToPlace();
     updateWorldTotals();
