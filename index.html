@@ -945,6 +945,7 @@
         <button type="button" class="nav-item" data-place="velvetHour"><span class="nav-icon" aria-hidden="true">🍸</span><span class="nav-label">도심의 바</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="onyxClub"><span class="nav-icon" aria-hidden="true">🪩</span><span class="nav-label">도심의 클럽</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="busStop"><span class="nav-icon" aria-hidden="true">🚏</span><span class="nav-label">버스 정류장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="cityHospital"><span class="nav-icon" aria-hidden="true">🏥</span><span class="nav-label">병원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="buildingForest"><span class="nav-icon" aria-hidden="true">🏙️</span><span class="nav-label">빌딩숲</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="bakery"><span class="nav-icon" aria-hidden="true">🥐</span><span class="nav-label">빵집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="elephantShop"><span class="nav-icon" aria-hidden="true">🐘</span><span class="nav-label">코끼리도 춤을 춘다</span><span class="nav-arrow" aria-hidden="true">›</span></button>
@@ -986,6 +987,7 @@
         <button type="button" class="nav-item" data-place="forestPond"><span class="nav-icon" aria-hidden="true">🌕</span><span class="nav-label">숲속 연못</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="hillhouse"><span class="nav-icon" aria-hidden="true">🏡</span><span class="nav-label">언덕 위 집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="mommyRestaurant"><span class="nav-icon" aria-hidden="true">🍚</span><span class="nav-label">엄마의 엄마 식당</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="ruralClinic"><span class="nav-icon" aria-hidden="true">🩺</span><span class="nav-label">의원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="postbox"><span class="nav-icon" aria-hidden="true">📮</span><span class="nav-label">우체통</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="smallpark"><span class="nav-icon" aria-hidden="true">🌿</span><span class="nav-label">작은 공원</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="bookstore"><span class="nav-icon" aria-hidden="true">📖</span><span class="nav-label">작은 서점</span><span class="nav-arrow" aria-hidden="true">›</span></button>
@@ -1073,6 +1075,8 @@
             <button type="button" class="pin" data-place="convenienceStore" style="left:33%;top:60.5%" aria-label="편의점 선택"><span class="pin-label"><span class="pin-text">편의점</span></span></button>
             <button type="button" class="pin" data-place="sauna" style="left:37.3%;top:15.5%" aria-label="찜질방 선택"><span class="pin-label"><span class="pin-text">찜질방</span></span></button>
             <!-- v52 신규 장소: 임시 좌표이며 left/top으로 직접 수정할 수 있습니다. -->
+            <!-- 신규 의원: 임시 좌표. left/top을 원하는 지도 위치로 조정할 수 있습니다. -->
+            <button type="button" class="pin" data-place="ruralClinic" style="left:72%;top:54%" aria-label="의원 선택"><span class="pin-label"><span class="pin-text">의원</span></span></button>
             <button type="button" class="pin" data-place="mentalHospital" style="left:80.4%;top:27.5%" aria-label="정신병원 선택"><span class="pin-label"><span class="pin-text">정신병원</span></span></button>
             <button type="button" class="pin" data-place="backAlley" style="left:46%;top:69.6%" aria-label="뒷골목 선택"><span class="pin-label"><span class="pin-text">뒷골목</span></span></button>
             <button type="button" class="pin" data-place="gamblingHouse" style="left:93%;top:59%" aria-label="도박장 선택"><span class="pin-label"><span class="pin-text">도박장</span></span></button>
@@ -1096,6 +1100,8 @@
             <button type="button" class="pin" data-place="giwaHouse" style="left:48.8%;top:21.4%" aria-label="기와집 선택"><span class="pin-label"><span class="pin-text">기와집</span></span></button>
             <button type="button" class="pin" data-place="privateVilla" style="left:13%;top:48%" aria-label="개인 별장 선택"><span class="pin-label"><span class="pin-text">개인 별장</span></span></button>
             <button type="button" class="pin" data-place="privatePier" style="left:13%;top:55%" aria-label="개인 선착장 선택"><span class="pin-label"><span class="pin-text">개인 선착장</span></span></button>
+            <!-- 신규 도심 병원: 임시 좌표. left/top을 원하는 지도 위치로 조정할 수 있습니다. -->
+            <button type="button" class="pin" data-place="cityHospital" style="left:46.5%;top:45.2%" aria-label="병원 선택"><span class="pin-label"><span class="pin-text">병원</span></span></button>
             <button type="button" class="pin" data-place="bakery" style="left:60.7%;top:44%" aria-label="빵집 선택"><span class="pin-label"><span class="pin-text">빵집</span></span></button>
           </div>
           
@@ -1222,6 +1228,7 @@
     gym: { name: '헬스장', english: 'GYM', icon: '🏋️', category: 'OUTSKIRTS', meta: '삼대몇', npcs: ['eunsil', 'gwinam', 'ted', 'sapsap'], image: 'asset-place/health.webp', coverPosition: 'center' },
     convenienceStore: { name: '편의점', english: 'CONVENIENCE STORE', icon: '🏪', category: 'OUTSKIRTS', meta: '24시 열어요', npcs: ['eunsil', 'baeduhan', 'vivian', 'oliver', 'gwinam', 'ted', 'jerry', 'maya', 'sapsap'], image: 'asset-place/store.webp', coverPosition: 'center' },
     sauna: { name: '찜질방', english: 'SAUNA', icon: '♨️', category: 'OUTSKIRTS', meta: '참나무 숯장작 삼겹살 맛집', npcs: ['eunsil', 'damian', 'bokja', 'jerry', 'beak', 'nutbam', 'sapsap'], image: 'asset-place/sauna.webp', coverPosition: 'center' },
+    ruralClinic: { name: '의원', english: 'RURAL CLINIC', icon: '🩺', category: 'OUTSKIRTS', meta: '챗시티 근교 시골 의원', npcs: ['noah', 'sapsap'], image: 'asset-place/clinic.webp', coverPosition: 'center' },
     mentalHospital: { name: '정신병원', english: 'PSYCHIATRIC HOSPITAL', icon: '🏥', category: 'OUTSKIRTS', meta: '마음을 치유받고 가세요', npcs: ['sam', 'sasha', 'aubrey', 'sapsap'], image: 'asset-place/mthospital.webp', coverPosition: 'center' },
     backAlley: { name: '뒷골목', english: 'BACK ALLEY', icon: '🌑', category: 'OUTSKIRTS', meta: '비겁하다 욕하지마', npcs: ['jerry', 'roy', 'baeduhan', 'ted', 'max', 'beak', 'nutbam', 'sapsap'], image: 'asset-place/backalley.webp', coverPosition: 'center' },
     gamblingHouse: { name: '도박장', english: 'GAMBLING HOUSE', icon: '🎲', category: 'OUTSKIRTS', meta: '매우 수상한 건물', npcs: ['roy', 'john', 'max', 'sapsap'], image: 'asset-place/gambling.webp', coverPosition: 'center' },
@@ -1242,6 +1249,7 @@
     giwaHouse: { name: '기와집', english: 'TILE-ROOFED HOUSE', icon: '🏠', category: 'OUTSKIRTS', meta: '방 3칸짜리의 단촐한 기와집', npcs: ['sunbi', 'jerry', 'sapsap'], image: 'asset-place/giwa.webp', coverPosition: 'center' },
     privateVilla: { name: '개인 별장', english: 'PRIVATE BEACH VILLA', icon: '🏖️', category: 'OUTSKIRTS', meta: '누군가의 고급스러운 개인 해변 별장', npcs: ['valen', 'jerry', 'sapsap'], image: 'asset-place/villa.webp', coverPosition: 'center' },
     privatePier: { name: '개인 선착장', english: 'PRIVATE PIER', icon: '🛥️', category: 'OUTSKIRTS', meta: '누군가의 고급 요트가 있는 선착장', npcs: ['valen', 'jerry', 'sapsap'], image: 'asset-place/pier.webp', coverPosition: 'center' },
+    cityHospital: { name: '병원', english: 'DOWNTOWN HOSPITAL', icon: '🏥', category: 'HOSPITAL', meta: '챗시티 도심 병원', npcs: ['eden', 'sapsap'], image: 'asset-place/hospital_2.webp', coverPosition: 'center' },
     bakery: { name: '빵집', english: 'BAKERY', icon: '🥐', category: 'SHOP', meta: '빵집', npcs: ['jiho', 'jerry', 'sunbi', 'sapsap'], image: 'asset-place/bakery.webp', coverPosition: 'center' },
   };
 
@@ -1344,6 +1352,8 @@
     valen: { name: '발렌틴 로크', role: '할리우드 스타', image: 'asset-profile/valen.webp', description: '2026.11.08에 공개됩니다' },
     jiho: { name: '윤지호', role: '히어로 활동명: 깡패', image: 'asset-profile/jiho.webp', description: '2026.11.08에 공개됩니다' },
     mijeong: { name: '미정', role: '혼날래?', image: 'asset-profile/mijeong.webp', description: '혼날래?' },
+    noah: { name: '노아 아나파', role: '천재적인 두뇌의 양아치 출신 의사', image: 'asset-profile/noah.webp', description: '천재적인 두뇌의 양아치 출신 의사' },
+    eden: { name: '이든 아나파', role: '유리멘탈 의사', image: 'asset-profile/eden.webp', description: '유리멘탈 의사' },
     sapsap: { name: '삽살이', role: '포탈 이동이 가능한 강아지', image: 'asset-profile/sapsap.webp', description: '포탈 이동이 가능한 강아지' },
   };
 
