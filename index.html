@@ -923,7 +923,7 @@
       <div><strong>CHATCITY</strong><small>CHATCITY WORLD</small></div>
     </div>
     <span class="population-meter population-mobile" title="현재 등록된 NPC 인구">👥 <strong data-population-count>—</strong>명</span>
-    <button type="button" class="mobile-download-trigger" id="mobileDownload" aria-label="로어북 다운" title="로어북 다운"><span class="mobile-download-arrow" aria-hidden="true">↓</span><span>로어북 다운</span></button>
+    <a class="mobile-download-trigger" id="mobileDownload" href="./Chatcity.json" download="Chatcity.json" aria-label="로어북 다운" title="로어북 다운"><span class="mobile-download-arrow" aria-hidden="true">↓</span><span>로어북 다운</span></a>
   </header>
   <button type="button" class="mobile-menu-backdrop" id="mobileMenuBackdrop" aria-label="장소 메뉴 닫기" tabindex="-1"></button>
   <aside class="sidebar" id="mobileSidebar" aria-label="장소 목록">
@@ -1012,7 +1012,7 @@
   </aside>
 
   <main class="main">
-    <div class="topline"><div class="crumb">WORLD LIBRARY <span aria-hidden="true">/</span> <b>CHATCITY</b></div><div class="top-actions"><span class="population-meter population-desktop">👥 현재 인구 <strong data-population-count>—</strong>명</span><button type="button" class="download-button" id="downloadLorebook" aria-haspopup="dialog"><span class="download-glyph" aria-hidden="true">↓</span>로어북 다운받기</button></div></div>
+    <div class="topline"><div class="crumb">WORLD LIBRARY <span aria-hidden="true">/</span> <b>CHATCITY</b></div><div class="top-actions"><span class="population-meter population-desktop">👥 현재 인구 <strong data-population-count>—</strong>명</span><a class="download-button" id="downloadLorebook" href="./Chatcity.json" download="Chatcity.json"><span class="download-glyph" aria-hidden="true">↓</span>로어북 다운받기</a></div></div>
     <header class="headline"><div><div class="eyebrow">AN INTERACTIVE LOREBOOK</div><h1>Welcome to CHATCITY.</h1><p>지도에서 장소를 선택하세요.</p></div></header>
 
     <div class="content">
@@ -1164,13 +1164,6 @@
     <div class="below">CHATCITY · HTML / CSS / Vanilla JavaScript</div>
   </main>
 </div>
-<!-- 로어북 다운로드 기능이 준비되기 전까지 표시하는 안내 팝업 -->
-<dialog class="coming-soon" id="downloadDialog" aria-labelledby="downloadDialogTitle">
-  <button type="button" class="dialog-close" id="downloadClose" aria-label="팝업 닫기">✕</button>
-  <div class="coming-soon-mark" aria-hidden="true">✦</div>
-  <h2 id="downloadDialogTitle">아직 준비중이에요</h2>
-  <button type="button" class="dialog-confirm" id="downloadConfirm">확인</button>
-</dialog>
 <!-- v83: 검색 가능한 CHATCITY 전체 주민 목록. 기존 NPC 정보에서 동적으로 구성됩니다. -->
 <dialog class="residents-dialog" id="residentsDialog" aria-labelledby="residentsTitle">
   <div class="residents-modal-shell">
@@ -1207,14 +1200,14 @@
     smallpark: { name: '작은 공원', english: 'SMALL PARK', icon: '🌿', category: 'OUTSKIRTS', meta: '마을 한편에 자리한 작은 쉼터', npcs: ['chunsik', 'eunsil', 'jerry', 'candy', 'tiana', 'margo', 'doolgi', 'maya', 'nutbam', 'yihyun', 'jinhee', 'elio', 'ted', 'valen', 'sapsap', 'uisimi'], image: 'asset-place/small-park.webp', coverPosition: 'center 65%' },
     outskirtsCafe: { name: '카페', english: 'OUTSKIRTS CAFE', icon: '☕', category: 'CAFE', meta: '커피 향이 가득한 마을의 작은 카페', npcs: ['chunsik', 'jerry', 'rosie', 'eliza', 'maya', 'raoul', 'jinhee', 'elio', 'aubrey', 'cassian', 'sunbi', 'sapsap', 'uisimi'], image: 'asset-place/outskirts-cafe.webp', coverPosition: 'center 52%' },
     flowerbed: { name: '화단', english: 'APARTMENT FLOWERBED', icon: '🌷', category: 'OUTSKIRTS', meta: '아파트 단지 앞 화단', npcs: ['chunsik', 'pip', 'fifi', 'chichi', 'jerry', 'oliver', 'ted', 'sunbi', 'sapsap'], image: 'asset-place/apartment-flowerbed.webp', coverPosition: 'center 63%' },
-    bookstore: { name: '작은 서점', english: 'SMALL BOOKSTORE', icon: '📖', category: 'BOOKSTORE', meta: '작은 서점', npcs: ['emma', 'jerry', 'rosie', 'eliza', 'jinhee', 'dorian', 'valen', 'sunbi', 'sapsap'], image: 'asset-place/small-bookstore.webp', coverPosition: 'center 56%' },
+    bookstore: { name: '작은 서점', english: 'SMALL BOOKSTORE', icon: '📖', category: 'BOOKSTORE', meta: '작은 서점', npcs: ['emma', 'jerry', 'rosie', 'eliza', 'jinhee', 'dorian', 'valen', 'sunbi', 'ban2y', 'sapsap'], image: 'asset-place/small-bookstore.webp', coverPosition: 'center 56%' },
     hillhouse: { name: '언덕 위 집', english: 'HILLTOP HOUSE', icon: '🏡', category: 'HILL HOUSE', meta: '언덕 위에 자리한 아늑한 집', npcs: ['jinhee', 'jerry', 'fox', 'sapsap'], image: 'asset-place/hill-house.webp', coverPosition: 'center 60%' },
     forestPond: { name: '숲속 연못', english: 'FOREST POND', icon: '🌕', category: 'MYSTIC POND', meta: '보름달이 뜨는 밤 깊은 숲속 연못을 찾으세요', npcs: ['wolhwa', 'aubrey', 'eddie', 'nutbam', 'mijeong', 'sapsap'], image: 'asset-place/forest-pond.webp', coverPosition: 'center' },
-    detectiveOffice: { name: '탐정 사무소', english: 'DETECTIVE OFFICE', icon: '🔎', category: 'OFFICE', meta: '마을 안쪽의 낡은 탐정 사무소', npcs: ['dorian', 'watson', 'sapsap'], image: 'asset-place/detective-office.webp', coverPosition: 'center 55%' },
+    detectiveOffice: { name: '탐정 사무소', english: 'DETECTIVE OFFICE', icon: '🔎', category: 'OFFICE', meta: '마을 안쪽의 낡은 탐정 사무소', npcs: ['dorian', 'watson', 'ban2y', 'sapsap'], image: 'asset-place/detective-office.webp', coverPosition: 'center 55%' },
     mommyRestaurant: { name: '엄마의 엄마 식당', english: 'MOMMY RESTAURANT', icon: '🍚', category: 'RESTAURANT', meta: '왜 할머니가 아니에요?', npcs: ['mijeong', 'sapsap', 'jerry'], image: 'asset-place/mommy.webp', coverPosition: 'center' },
     repairShop: { name: '선박 수리 작업장', english: 'BOAT REPAIR', icon: '🛠️', category: 'WORKSHOP', meta: '선박 수리 작업장', npcs: ['jack', 'gael', 'sapsap'], image: 'asset-place/repair.webp', coverPosition: 'center' },
     dockBar: { name: '부두 근처 바', english: 'DOCKSIDE BAR', icon: '🍺', category: 'BAR', meta: '부두 근처 바', npcs: ['jack', 'jerry', 'roy', 'baeduhan', 'gael', 'ted', 'max', 'sapsap'], image: 'asset-place/bar.webp', coverPosition: 'center' },
-    police: { name: '파출소', english: 'POLICE STATION', icon: '🚓', category: 'POLICE', meta: '마을에 하나뿐인 파출소', npcs: ['penny', 'yihyun', 'ted', 'jerry', 'jonan', 'beak', 'sapsap'], image: 'asset-place/police.webp', coverPosition: 'center' },
+    police: { name: '파출소', english: 'POLICE STATION', icon: '🚓', category: 'POLICE', meta: '마을에 하나뿐인 파출소', npcs: ['penny', 'yihyun', 'ted', 'jerry', 'jonan', 'beak', 'ban2y', 'sapsap'], image: 'asset-place/police.webp', coverPosition: 'center' },
     largePark: { name: '공원', english: 'PARK', icon: '🌳', category: 'PARK', meta: '푸른 잔디와 산책길이 펼쳐진 넓은 공원', npcs: ['goose', 'pip', 'eunsil', 'jerry', 'tiana', 'doolgi', 'maya', 'raoul', 'nutbam', 'yihyun', 'jinhee', 'elio', 'oliver', 'ted', 'sable', 'valen', 'sapsap', 'uisimi'], image: 'asset-place/largepark.webp', coverPosition: 'center' },
     pond: { name: '공원 연못', english: 'PARK POND', icon: '🦆', category: 'POND', meta: '맑은 물이 잔잔하게 흐르는 작은 연못', npcs: ['goose', 'yihyun', 'ted', 'sable', 'jerry', 'nutbam', 'valen', 'sapsap'], image: 'asset-place/pond.webp', coverPosition: 'center' },
     alley: { name: '골목길', english: 'ALLEYWAY', icon: '🏘️', category: 'ALLEYWAY', meta: '주의: 양아치 조심', npcs: ['goose', 'eunsil', 'jerry', 'candy', 'baeduhan', 'maya', 'raoul', 'oliver', 'ted', 'sable', 'sapsap', 'uisimi'], image: 'asset-place/alleyway.webp', coverPosition: 'center' },
@@ -1364,6 +1357,7 @@
     dylan: { name: '딜런 브룩스', role: '힘 쎈 바보는 모태솔로', image: 'asset-profile/dylan.webp', description: '힘 쎈 바보는 모태솔로' },
     eden: { name: '이든 아나파', role: '유리멘탈 의사', image: 'asset-profile/eden.webp', description: '유리멘탈 의사' },
     uisimi: { name: '의심이', role: '떠돌이 강아지', image: 'asset-profile/uisimi.webp', description: '떠돌이 강아지' },
+    ban2y: { name: '반이열', role: '', image: 'asset-profile/ban2y.webp', description: '' },
     sapsap: { name: '삽살이', role: '포탈 이동이 가능한 강아지', image: 'asset-profile/sapsap.webp', description: '포탈 이동이 가능한 강아지' },
   };
 
@@ -1614,15 +1608,6 @@
     document.getElementById('placeCount').textContent = Object.keys(PLACES).length;
   }
   updateWorldTotals();
-
-  // 상단의 로어북 다운로드 버튼: 기능 준비 중 안내를 표시합니다.
-  const downloadDialog = document.getElementById('downloadDialog');
-  document.getElementById('downloadLorebook').addEventListener('click', () => downloadDialog.showModal());
-  document.getElementById('downloadClose').addEventListener('click', () => downloadDialog.close());
-  document.getElementById('downloadConfirm').addEventListener('click', () => downloadDialog.close());
-  downloadDialog.addEventListener('click', event => {
-    if (event.target === downloadDialog) downloadDialog.close();
-  });
 
   // ④ 원형 사진을 클릭하면 사진이 전체 화면으로 나타납니다.
   const photoViewer = document.getElementById('photoViewer');
@@ -1947,7 +1932,6 @@
     openMenuButton.addEventListener('click', openMenu);
     closeMenuButton.addEventListener('click', closeMenu);
     menuBackdrop.addEventListener('click', closeMenu);
-    document.getElementById('mobileDownload').addEventListener('click', () => document.getElementById('downloadLorebook').click());
     document.getElementById('mobileSheetClose').addEventListener('click', closeSheet);
     sheetBackdrop.addEventListener('click', closeSheet);
     document.addEventListener('keydown', event => {
