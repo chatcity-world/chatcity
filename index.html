@@ -946,6 +946,7 @@
         <button type="button" class="nav-item" data-place="onyxClub"><span class="nav-icon" aria-hidden="true">🪩</span><span class="nav-label">도심의 클럽</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="busStop"><span class="nav-icon" aria-hidden="true">🚏</span><span class="nav-label">버스 정류장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="buildingForest"><span class="nav-icon" aria-hidden="true">🏙️</span><span class="nav-label">빌딩숲</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="bakery"><span class="nav-icon" aria-hidden="true">🥐</span><span class="nav-label">빵집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="elephantShop"><span class="nav-icon" aria-hidden="true">🐘</span><span class="nav-label">코끼리도 춤을 춘다</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="penthouse"><span class="nav-icon" aria-hidden="true">🏢</span><span class="nav-label">펜트하우스</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="sewer"><span class="nav-icon" aria-hidden="true">🕳️</span><span class="nav-label">하수구</span><span class="nav-arrow" aria-hidden="true">›</span></button>
@@ -955,7 +956,10 @@
         <button class="nav-group-toggle" type="button" aria-controls="nav-group-outskirts" aria-expanded="true"><span class="nav-group-label">🌾 <span>외곽 마을</span></span><span class="nav-group-side"><span class="nav-group-count" data-group-count="outskirts">5</span><span class="nav-group-chevron" aria-hidden="true">⌄</span></span></button>
         <div class="nav-group-body" id="nav-group-outskirts">
         <button type="button" class="nav-item" data-place="laLaLola"><span class="nav-icon" aria-hidden="true">👗</span><span class="nav-label">La La Lola</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="privateVilla"><span class="nav-icon" aria-hidden="true">🏖️</span><span class="nav-label">개인 별장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="privatePier"><span class="nav-icon" aria-hidden="true">🛥️</span><span class="nav-label">개인 선착장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="boardNotice"><span class="nav-icon" aria-hidden="true">📌</span><span class="nav-label">게시판</span><span class="nav-arrow" aria-hidden="true">›</span></button>
+        <button type="button" class="nav-item" data-place="giwaHouse"><span class="nav-icon" aria-hidden="true">🏠</span><span class="nav-label">기와집</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="secludedHome"><span class="nav-icon" aria-hidden="true">🏚️</span><span class="nav-label">고립된 주택</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="gumdo"><span class="nav-icon" aria-hidden="true">🥋</span><span class="nav-label">검도장</span><span class="nav-arrow" aria-hidden="true">›</span></button>
         <button type="button" class="nav-item" data-place="alley"><span class="nav-icon" aria-hidden="true">🏘️</span><span class="nav-label">골목길</span><span class="nav-arrow" aria-hidden="true">›</span></button>
@@ -1086,6 +1090,11 @@
             <button type="button" class="pin" data-place="luckyDraw" style="left:61%;top:38.6%" aria-label="럭키 드로우 선택"><span class="pin-label"><span class="pin-text">럭키 드로우</span></span></button>
             <button type="button" class="pin" data-place="landryRealty" style="left:63.3%;top:39.8%" aria-label="부동산 선택"><span class="pin-label"><span class="pin-text">부동산</span></span></button>
             <button type="button" class="pin" data-place="springGarden" style="left:26.5%;top:58.2%" aria-label="봄의 정원 선택"><span class="pin-label"><span class="pin-text">봄의 정원</span></span></button>
+            <!-- v85 신규 장소 말풍선: 임시 위치입니다. 실제 지도 건물 위치에 맞게 left/top을 조정할 수 있습니다. -->
+            <button type="button" class="pin" data-place="giwaHouse" style="left:48.8%;top:21.4%" aria-label="기와집 선택"><span class="pin-label"><span class="pin-text">기와집</span></span></button>
+            <button type="button" class="pin" data-place="privateVilla" style="left:13%;top:48%" aria-label="개인 별장 선택"><span class="pin-label"><span class="pin-text">개인 별장</span></span></button>
+            <button type="button" class="pin" data-place="privatePier" style="left:13%;top:55%" aria-label="개인 선착장 선택"><span class="pin-label"><span class="pin-text">개인 선착장</span></span></button>
+            <button type="button" class="pin" data-place="bakery" style="left:60.7%;top:44%" aria-label="빵집 선택"><span class="pin-label"><span class="pin-text">빵집</span></span></button>
           </div>
           
           <button type="button" class="mobile-browse-btn" id="mobileBrowse" aria-label="목록 열기" aria-controls="mobileSidebar" aria-expanded="false"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg><span class="mobile-browse-label">목록</span></button>
@@ -1227,6 +1236,10 @@
     springGarden: { name: '봄의 정원', english: 'SPRING GARDEN', icon: '💐', category: 'OUTSKIRTS', meta: '헬스장과 화단 사이에 위치한 꽃집', npcs: ['byeolhui', 'jerry', 'aubrey'], image: 'asset-place/garden.webp', coverPosition: 'center' },
     taekwondo: { name: '태권도장', english: 'TAEKWONDO DOJANG', icon: '🥋', category: 'OUTSKIRTS', meta: '태!권!도!', npcs: ['beak'], image: 'asset-place/taek.webp', coverPosition: 'center' },
     yakultCart: { name: '야쿠르트 카트', english: 'YAKULT CART', icon: '🥛', category: 'OUTSKIRTS', meta: '카페와 정정당당하게 승부', npcs: ['aiden'], image: 'asset-place/yak.webp', coverPosition: 'center' },
+    giwaHouse: { name: '기와집', english: 'TILE-ROOFED HOUSE', icon: '🏠', category: 'OUTSKIRTS', meta: '방 3칸짜리의 단촐한 기와집', npcs: ['sunbi', 'jerry'], image: 'asset-place/giwa.webp', coverPosition: 'center' },
+    privateVilla: { name: '개인 별장', english: 'PRIVATE BEACH VILLA', icon: '🏖️', category: 'OUTSKIRTS', meta: '누군가의 고급스러운 개인 해변 별장', npcs: ['valen', 'jerry'], image: 'asset-place/villa.webp', coverPosition: 'center' },
+    privatePier: { name: '개인 선착장', english: 'PRIVATE PIER', icon: '🛥️', category: 'OUTSKIRTS', meta: '누군가의 고급 요트가 있는 선착장', npcs: ['valen', 'jerry'], image: 'asset-place/pier.webp', coverPosition: 'center' },
+    bakery: { name: '빵집', english: 'BAKERY', icon: '🥐', category: 'SHOP', meta: '빵집', npcs: ['jiho', 'jerry'], image: 'asset-place/bakery.webp', coverPosition: 'center' },
   };
 
   // ② NPC 데이터: 새 인물을 추가할 때 이곳에 정보를 넣고 장소의 npcs 배열에 ID를 연결하세요.
@@ -1324,10 +1337,13 @@
     beak: { name: '백설화', role: '태권도장 관장', image: 'asset-profile/beak.webp', description: '2026.11.08에 공개됩니다' },
     aiden: { name: '에이든 비피더스', role: '야쿠르트 판매원', image: 'asset-profile/aiden.webp', description: '2026.11.08에 공개됩니다' },
     fox: { name: '펄사', role: '흰 여우', image: 'asset-profile/fox.webp', description: '2026.11.08에 공개됩니다' },
+    sunbi: { name: '한태언', role: '쉬었음 선비', image: 'asset-profile/sunbi.webp', description: '2026.11.08에 공개됩니다' },
+    valen: { name: '발렌틴 로크', role: '할리우드 스타', image: 'asset-profile/valen.webp', description: '2026.11.08에 공개됩니다' },
+    jiho: { name: '윤지호', role: '히어로 활동명: 깡패', image: 'asset-profile/jiho.webp', description: '2026.11.08에 공개됩니다' },
   };
 
   // v77: 장소에 마우스를 잠깐 올리거나 키보드로 선택하면 대표 이미지를 미리 받아둡니다.
-  // 전체 45개 장소를 한꺼번에 내려받지 않고, 최근 미리보기 4장만 유지합니다.
+  // 전체 장소를 한꺼번에 내려받지 않고, 최근 미리보기 4장만 유지합니다.
   const warmPlaceCache = new Map();
   function warmPlaceImage(placeId) {
     const url = PLACES[placeId]?.image;
