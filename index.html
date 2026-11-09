@@ -2281,7 +2281,7 @@
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 60000);
-        mapNotice('모닝·데이·이브닝·나이트 지도 4장 다운로드를 시작했습니다.');
+        mapNotice('지도 4장 다운로드 시작');
       } catch (error) {
         console.warn('[CHATCITY] 지도 이미지 ZIP 다운로드 오류:', error);
         mapNotice('지도 다운로드 실패: GitHub Pages의 assets 폴더에 지도 이미지 4장이 모두 있는지 확인해 주세요.');
