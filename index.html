@@ -928,6 +928,7 @@
     .place-intro .npc-section-text { margin: 0; color: #5b5648; font-size: 12px; font-weight: 400; line-height: 1.9; letter-spacing: normal; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
 
     /* 캐릭터 프로필 원본 이미지 ZIP 받기 (장소 이미지 및 썸네일 제외) */
+    .profile-archive-controls { position:static; padding:0 0 12px; border-bottom:1px solid #eee8d9; }
     .profile-archive-button {
       display:inline-flex; justify-content:center; align-items:center;
       min-height:38px; max-width:100%; margin-top:8px; padding:10px 14px;
@@ -1208,10 +1209,13 @@
         <input id="residentsSearch" type="search" placeholder="이름, 소개, 상세 내용으로 검색" autocomplete="off" spellcheck="false" />
       </div>
       <p class="residents-search-meta" id="residentsCount" role="status" aria-live="polite"></p>
-      <button type="button" class="profile-archive-button" id="downloadNpcProfiles">캐릭터 사진 전체 다운로드 (ZIP)</button>
-      <p class="profile-archive-status" id="profileArchiveStatus" role="status" aria-live="polite" hidden></p>
     </div>
-    <div class="residents-results" id="residentsResults" aria-label="전체 주민 목록"></div>
+    <div class="residents-results" id="residentsResults" aria-label="전체 주민 목록">
+      <div class="profile-archive-controls" id="profileArchiveControls">
+        <button type="button" class="profile-archive-button" id="downloadNpcProfiles">캐릭터 사진 전체 다운로드 (ZIP)</button>
+        <p class="profile-archive-status" id="profileArchiveStatus" role="status" aria-live="polite" hidden></p>
+      </div>
+    </div>
     <p class="residents-no-results" id="residentsNoResults" hidden>검색 결과가 없습니다.</p>
   </div>
 </dialog>
@@ -1992,6 +1996,7 @@
     const closeButton = document.getElementById('closeResidents');
     const input = document.getElementById('residentsSearch');
     const results = document.getElementById('residentsResults');
+    const archiveControls = document.getElementById('profileArchiveControls');
     const count = document.getElementById('residentsCount');
     const empty = document.getElementById('residentsNoResults');
     const entries = Object.entries(NPCS).sort((a, b) =>
@@ -2103,7 +2108,8 @@
       const filtered = entries.filter(([id]) => tokens.every(token => matchIndex.get(id).includes(token)));
       count.textContent = tokens.length ? `검색 결과 ${filtered.length}명 · 전체 ${entries.length}명` : `전체 ${entries.length}명 · 이름 가나다순`;
       empty.hidden = filtered.length > 0;
-      results.replaceChildren(...filtered.map(([id, npc], index) => makeRow(id, npc, index)));
+      // 다운로드 버튼은 스크롤 목록의 첫 요소로 유지하여 목록과 함께 스크롤합니다.
+      results.replaceChildren(archiveControls, ...filtered.map(([id, npc], index) => makeRow(id, npc, index)));
     }
     input.addEventListener('input', () => { expandedId = null; render(); });
     openButton.addEventListener('click', () => {
