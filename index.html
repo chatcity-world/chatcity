@@ -927,6 +927,24 @@
     .place-intro .npc-section-title { margin: 0 0 12px; text-align: left; }
     .place-intro .npc-section-text { margin: 0; color: #5b5648; font-size: 12px; font-weight: 400; line-height: 1.9; letter-spacing: normal; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; }
 
+    /* 지도 이미지 4종: 장소 메뉴 최상단의 작고 독립적인 다운로드 버튼 */
+    .map-archive-entry { flex:none; padding:1px 0 9px; }
+    .map-archive-button {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-height:32px; max-width:100%; padding:7px 12px;
+      background:#fff9e9; border:1px solid #e8dcc0; border-radius:9px;
+      color:#675c43; font:inherit; font-size:11px; font-weight:650;
+      line-height:1.3; cursor:pointer;
+    }
+    .map-archive-button:hover:not(:disabled) { background:#f9ecca; border-color:#d7c293; }
+    .map-archive-button:disabled { opacity:.65; cursor:progress; }
+    .map-archive-status { margin:7px 0 0; color:#877964; font-size:11px; line-height:1.6; overflow-wrap:anywhere; }
+    .map-archive-status[hidden] { display:none; }
+    @media (max-width:760px) {
+      .sidebar .map-archive-entry { width:100%; padding:39px 0 0; }
+      .sidebar .resident-entry { padding-top:10px; }
+    }
+
     /* 캐릭터 프로필 원본 이미지 ZIP 받기 (장소 이미지 및 썸네일 제외) */
     .profile-archive-controls { position:static; padding:0 0 12px; border-bottom:1px solid #eee8d9; }
     .profile-archive-button {
@@ -956,6 +974,10 @@
   <button type="button" class="mobile-menu-backdrop" id="mobileMenuBackdrop" aria-label="장소 메뉴 닫기" tabindex="-1"></button>
   <aside class="sidebar" id="mobileSidebar" aria-label="장소 목록">
     <button type="button" class="mobile-nav-close" id="mobileMenuClose" aria-label="장소 메뉴 닫기">✕</button>
+    <div class="map-archive-entry">
+      <button type="button" class="map-archive-button" id="downloadMapImages" aria-describedby="mapArchiveStatus">지도 이미지 다운</button>
+      <p class="map-archive-status" id="mapArchiveStatus" role="status" aria-live="polite" hidden></p>
+    </div>
     <div class="resident-entry">
       <button type="button" class="resident-entry-button" id="openResidents" aria-haspopup="dialog" aria-controls="residentsDialog">
         <span class="resident-entry-icon" aria-hidden="true">👥</span>
@@ -2209,6 +2231,65 @@
   function announce(message) {
     status.hidden = false;
     status.textContent = message;
+  }
+
+  // 현재 index.html이 사용하는 시간대별 지도 원본 4장만 ZIP으로 제공합니다.
+  const mapArchiveButton = document.getElementById('downloadMapImages');
+  const mapArchiveStatus = document.getElementById('mapArchiveStatus');
+  const mapFiles = [
+    'assets/map-morning.webp',
+    'assets/map-day.webp',
+    'assets/map-evening.webp',
+    'assets/map-night.webp'
+  ];
+  if (mapArchiveButton && mapArchiveStatus) {
+    const mapNotice = message => {
+      mapArchiveStatus.hidden = false;
+      mapArchiveStatus.textContent = message;
+    };
+    mapArchiveButton.addEventListener('click', async () => {
+      if (mapArchiveButton.disabled) return;
+      if (location.protocol === 'file:') {
+        mapNotice('지도 4장 ZIP 다운로드는 GitHub Pages 또는 localhost에서 이용해 주세요.');
+        return;
+      }
+      const label = mapArchiveButton.textContent;
+      mapArchiveButton.disabled = true;
+      try {
+        const files = [];
+        for (const path of mapFiles) {
+          mapArchiveButton.textContent = `지도 준비 ${files.length + 1}/4`;
+          mapNotice(`지도 이미지 ${files.length + 1}/4장 불러오는 중…`);
+          const response = await fetch(new URL(path, document.baseURI), { cache:'no-cache' });
+          if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
+          const bytes = new Uint8Array(await response.arrayBuffer());
+          if (bytes.length < 12 ||
+              String.fromCharCode(...bytes.subarray(0, 4)) !== 'RIFF' ||
+              String.fromCharCode(...bytes.subarray(8, 12)) !== 'WEBP') {
+            throw new Error(`${path}: 올바른 WebP 이미지가 아닙니다`);
+          }
+          files.push({ name:path, data:bytes });
+        }
+        mapNotice('지도 이미지 4장을 ZIP으로 묶는 중…');
+        const blob = writeZip(files);
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'CHATCITY_maps_4.zip';
+        link.hidden = true;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        mapNotice('모닝·데이·이브닝·나이트 지도 4장 다운로드를 시작했습니다.');
+      } catch (error) {
+        console.warn('[CHATCITY] 지도 이미지 ZIP 다운로드 오류:', error);
+        mapNotice('지도 다운로드 실패: GitHub Pages의 assets 폴더에 지도 이미지 4장이 모두 있는지 확인해 주세요.');
+      } finally {
+        mapArchiveButton.disabled = false;
+        mapArchiveButton.textContent = label;
+      }
+    });
   }
 
   button.addEventListener('click', async () => {
